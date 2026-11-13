@@ -168,3 +168,4 @@ export function AboutSection() {
     </section>
   );
 }
+

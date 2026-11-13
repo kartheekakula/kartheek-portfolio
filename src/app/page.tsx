@@ -1,5 +1,6 @@
 import { content } from "@/data/content";
 import { AboutSection } from "@/components/sections/about-section";
+import { ProjectsSection } from "@/components/sections/projects-section";
 
 export default function Home() {
   return (
@@ -28,70 +29,8 @@ export default function Home() {
       {/* Chapter 01: About / The Eye */}
       <AboutSection />
 
-      {/* Selected Projects */}
-      <section id="work" className="flex flex-col gap-10 scroll-mt-28">
-        <div className="flex items-baseline justify-between border-b border-line pb-4">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
-            Selected Works [ {content.projects.length.toString().padStart(2, "0")} ]
-          </h2>
-          <span className="font-mono text-xs text-muted">2024 — Present</span>
-        </div>
-
-        <div className="divide-y divide-line border-y border-line">
-          {content.projects.map((project, idx) => (
-            <article
-              key={project.id}
-              className="py-8 md:py-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-baseline transition-colors hover:bg-surface/60 px-2"
-            >
-              <div className="md:col-span-1 font-mono text-xs text-muted">
-                {(idx + 1).toString().padStart(2, "0")}
-              </div>
-
-              <div className="md:col-span-4 flex flex-col gap-2">
-                <div className="flex items-center gap-3">
-                  <h3 className="text-2xl sm:text-3xl font-normal text-text tracking-tight">
-                    {project.title}
-                  </h3>
-                  {project.link && (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-mono text-xs text-muted hover:text-accent transition-colors"
-                      aria-label={`Open ${project.title}`}
-                    >
-                      ↗
-                    </a>
-                  )}
-                </div>
-                <span className="font-mono text-xs text-muted">
-                  {project.role}
-                </span>
-              </div>
-
-              <div className="md:col-span-5 flex flex-col gap-3">
-                <p className="text-sm sm:text-base text-muted font-light leading-relaxed">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="font-mono text-[11px] uppercase tracking-wider text-muted border border-line px-2 py-0.5"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="md:col-span-2 md:text-right font-mono text-xs text-muted">
-                {project.year}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      {/* Chapter 02: Projects / The Build */}
+      <ProjectsSection />
 
       {/* Experience & History */}
       <section className="flex flex-col gap-10">
