@@ -3,6 +3,7 @@ import { AboutSection } from "@/components/sections/about-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { SkillsSection } from "@/components/sections/skills-section";
 import { ExperienceSection } from "@/components/sections/experience-section";
+import { LensSection } from "@/components/sections/lens-section";
 
 export default function Home() {
   return (
@@ -40,89 +41,8 @@ export default function Home() {
       {/* Chapter 03b: Experience / The Road So Far */}
       <ExperienceSection />
 
-      {/* Photography & Film Observations */}
-      <section id="lens" className="flex flex-col gap-10 scroll-mt-28">
-        <div className="flex items-baseline justify-between border-b border-line pb-4">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
-            Visual Studies [ Photography & Film ]
-          </h2>
-          <span className="font-mono text-xs text-muted">Analog & Motion</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Photos */}
-          <div className="flex flex-col gap-6">
-            <span className="font-mono text-xs uppercase tracking-wider text-muted border-b border-line pb-2">
-              Stills
-            </span>
-            <div className="flex flex-col gap-6">
-              {content.photos.map((photo) => (
-                <div
-                  key={photo.id}
-                  className="border border-line p-5 flex flex-col gap-3 bg-surface/30"
-                >
-                  <div className="aspect-[4/3] bg-surface border border-line flex items-center justify-center text-muted font-mono text-xs">
-                    [ Placeholder: {photo.src} ]
-                  </div>
-                  <div className="flex items-baseline justify-between pt-1">
-                    <span className="text-sm text-text font-normal">
-                      {photo.title}
-                    </span>
-                    <span className="font-mono text-xs text-muted">
-                      {photo.year}
-                    </span>
-                  </div>
-                  {photo.caption && (
-                    <p className="font-story text-sm text-muted">
-                      {photo.caption}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Films */}
-          <div className="flex flex-col gap-6">
-            <span className="font-mono text-xs uppercase tracking-wider text-muted border-b border-line pb-2">
-              Moving Image
-            </span>
-            <div className="flex flex-col gap-6">
-              {content.films.map((film) => (
-                <div
-                  key={film.id}
-                  className="border border-line p-5 flex flex-col gap-3 bg-surface/30"
-                >
-                  <div className="flex items-baseline justify-between">
-                    <h3 className="text-base text-text font-normal">
-                      {film.title}
-                    </h3>
-                    <span className="font-mono text-xs text-muted">
-                      {film.year} {film.duration && `// ${film.duration}`}
-                    </span>
-                  </div>
-                  <span className="font-mono text-xs text-muted">
-                    {film.role}
-                  </span>
-                  <p className="text-xs sm:text-sm text-muted font-light leading-relaxed">
-                    {film.summary}
-                  </p>
-                  {film.link && (
-                    <a
-                      href={film.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-mono text-xs text-muted hover:text-accent transition-colors pt-2 flex items-center gap-1"
-                    >
-                      Watch archive <span>↗</span>
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Chapter 04: The Lens */}
+      <LensSection />
 
       {/* Network / Socials / Colophon */}
       <footer id="contact" className="border-t border-line pt-12 pb-24 flex flex-col gap-12 scroll-mt-28">

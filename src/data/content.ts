@@ -68,9 +68,11 @@ export interface Photo {
   id: string;
   title: string;
   caption?: string;
+  camera: string;
+  location: string;
   year: string;
   src: string;
-  aspectRatio?: string;
+  aspectClass: string;
 }
 
 export interface Film {
@@ -78,9 +80,11 @@ export interface Film {
   title: string;
   year: string;
   role: string;
-  duration?: string;
+  duration: string;
   summary: string;
-  link?: string;
+  youtubeId: string;
+  thumbnail: string;
+  aspect?: string;
 }
 
 export interface Fact {
@@ -383,17 +387,61 @@ export const content: PortfolioContent = {
       id: "photo-01",
       title: "Tokyo Monorail at Dawn",
       caption: "Linear tracks slicing misty industrial corridors.",
+      camera: "Sony A7 IV · 35mm f/1.4 GM",
+      location: "Tokyo, Japan",
       year: "2025",
-      src: "/photos/tokyo-dawn.jpg",
-      aspectRatio: "4/5",
+      src: "/images/photos/tokyo-dawn.jpg",
+      aspectClass: "aspect-[4/5]",
     },
     {
       id: "photo-02",
       title: "Brutalist Concrete Horizon",
       caption: "Sharp shadow intersections at Barbican Estate.",
+      camera: "Fujifilm X100V · 23mm f/2",
+      location: "London, Barbican",
       year: "2024",
-      src: "/photos/barbican.jpg",
-      aspectRatio: "16/9",
+      src: "/images/photos/barbican.jpg",
+      aspectClass: "aspect-[16/9]",
+    },
+    {
+      id: "photo-03",
+      title: "Amaravati High Tension Grid",
+      caption: "Transmission towers disappearing into late twilight mist.",
+      camera: "Sony A7 IV · 85mm f/1.8",
+      location: "Amaravati, India",
+      year: "2025",
+      src: "/images/photos/amaravati-grid.jpg",
+      aspectClass: "aspect-[3/4]",
+    },
+    {
+      id: "photo-04",
+      title: "Kyoto Temple Eaves",
+      caption: "Repetitive wooden joins weathered by rain and moss.",
+      camera: "Leica Q2 · 28mm f/1.7",
+      location: "Kyoto, Higashiyama",
+      year: "2024",
+      src: "/images/photos/kyoto-eaves.jpg",
+      aspectClass: "aspect-[1/1]",
+    },
+    {
+      id: "photo-05",
+      title: "Late Night Metro Car",
+      caption: "Fluorescent hum reflected across curved steel stanchions.",
+      camera: "Ricoh GR IIIx · 40mm f/2.8",
+      location: "Hyderabad, India",
+      year: "2025",
+      src: "/images/photos/metro-car.jpg",
+      aspectClass: "aspect-[16/9]",
+    },
+    {
+      id: "photo-06",
+      title: "Concrete Light Slice",
+      caption: "Early sun cutting sharp angles across geometric facades.",
+      camera: "Fujifilm X100V · 23mm f/2",
+      location: "Mumbai, India",
+      year: "2024",
+      src: "/images/photos/concrete-light.jpg",
+      aspectClass: "aspect-[4/5]",
     },
   ],
   films: [
@@ -405,7 +453,9 @@ export const content: PortfolioContent = {
       duration: "04:12",
       summary:
         "An observational visual study of architectural massing and late afternoon light.",
-      link: "https://vimeo.com",
+      youtubeId: "L_LUpnjgPso",
+      thumbnail: "/images/films/quiet-geometry.jpg",
+      aspect: "2.39:1",
     },
     {
       id: "film-02",
@@ -415,7 +465,33 @@ export const content: PortfolioContent = {
       duration: "06:45",
       summary:
         "Short documentary piece documenting an artisan bookbinding studio in Kyoto.",
-      link: "https://vimeo.com",
+      youtubeId: "jNQXAC9IVRw",
+      thumbnail: "/images/films/machinery-in-silence.jpg",
+      aspect: "16:9",
+    },
+    {
+      id: "film-03",
+      title: "Night Drift, Amaravati",
+      year: "2025",
+      role: "Cinematography & Grade",
+      duration: "03:20",
+      summary:
+        "A slow-tempo night drive exploring unpaved capital perimeter highways.",
+      youtubeId: "dQw4w9WgXcQ",
+      thumbnail: "/images/films/night-drift.jpg",
+      aspect: "2.39:1",
+    },
+    {
+      id: "film-04",
+      title: "The Shinjuku Crossline",
+      year: "2024",
+      role: "Direction & Edit",
+      duration: "05:10",
+      summary:
+        "A fast-paced rhythmic assembly of commuter transitions at rush hour.",
+      youtubeId: "kJQP7kiw5Fk",
+      thumbnail: "/images/films/shinjuku.jpg",
+      aspect: "16:9",
     },
   ],
 };
