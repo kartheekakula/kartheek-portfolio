@@ -1,19 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const Mascot = dynamic(
-  () => import("@/components/mascot/Mascot").then((mod) => mod.Mascot),
-  { ssr: false }
-);
-
-const TerminalOverlay = dynamic(
-  () =>
-    import("@/components/easter-eggs/terminal-overlay").then(
-      (mod) => mod.TerminalOverlay
-    ),
-  { ssr: false }
-);
+import { Mascot } from "@/components/mascot/Mascot";
+import { TerminalOverlay } from "@/components/easter-eggs/terminal-overlay";
 
 export function ClientWidgets() {
   return (
@@ -23,4 +11,3 @@ export function ClientWidgets() {
     </>
   );
 }
-

@@ -1,139 +1,39 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { useMascotState } from "./useMascotState";
-import { ClapperHead } from "./parts/ClapperHead";
-import { MascotBody } from "./parts/MascotBody";
-import { MascotLimbs } from "./parts/MascotLimbs";
-import { MascotAccessories } from "./parts/MascotAccessories";
+import { useMascot } from "./useMascot";
+import { MascotSvg } from "./MascotSvg";
 
 export function Mascot() {
   const {
-    mode,
-    setMode,
-    chapter,
-    isBlinking,
-    isBreathing,
-    isClapping,
-    speechText,
-    runCycle,
+    state,
+    section,
     pos,
-    setPos,
-    posRef,
-    isDragging,
-    setIsDragging,
-    isFalling,
-    setIsFalling,
-    dragStartRef,
-    markActive,
-    saveX,
-    triggerClap,
-  } = useMascotState();
+    isMounted,
+    pupil,
+    isBlinking,
+    isFlashing,
+    isBreathing,
+    speechText,
+    walkPhase,
+    walkDirection,
+    handlePointerDown,
+  } = useMascot();
 
-  const squashRef = useRef<SVGGElement | null>(null);
-  const clickMovedRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Dragging event listeners on window
+  // Mascot flip Easter Egg (triggered by Konami Code in terminal-overlay)
   useEffect(() => {
-    if (!isDragging) return;
-
-    const handlePointerMove = (e: PointerEvent) => {
-      const deltaX = e.clientX - dragStartRef.current.mouseX;
-      const deltaY = e.clientY - dragStartRef.current.mouseY;
-
-      if (Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4) {
-        clickMovedRef.current = true;
-      }
-
-      const newX = Math.min(
-        window.innerWidth - 85,
-        Math.max(10, dragStartRef.current.initX + deltaX)
-      );
-      const newY = Math.min(
-        window.innerHeight - 90,
-        Math.max(10, dragStartRef.current.initY + deltaY)
-      );
-
-      setPos({ x: newX, y: newY });
-      posRef.current = { x: newX, y: newY };
-    };
-
-    const handlePointerUp = () => {
-      setIsDragging(false);
-
-      if (!clickMovedRef.current) {
-        // Was a pure click
-        triggerClap();
-        return;
-      }
-
-      // Save X in session storage
-      saveX(posRef.current.x);
-
-      // Gravity fall to bottom of viewport
-      const targetGroundY = window.innerHeight - 110;
-      const fallDistance = Math.max(0, targetGroundY - posRef.current.y);
-
-      if (fallDistance > 10) {
-        setIsFalling(true);
-        const duration = Math.min(0.5, Math.max(0.2, fallDistance / 900));
-
-        gsap.to(posRef.current, {
-          y: targetGroundY,
-          duration: duration,
-          ease: "power2.in",
-          onUpdate: () => {
-            setPos({ ...posRef.current });
-          },
-          onComplete: () => {
-            setIsFalling(false);
-            setMode("idle");
-
-            // Small tactile squash and bounce
-            if (squashRef.current) {
-              gsap.fromTo(
-                squashRef.current,
-                { scaleY: 0.68, scaleX: 1.32 },
-                {
-                  scaleY: 1,
-                  scaleX: 1,
-                  duration: 0.45,
-                  ease: "elastic.out(1.1, 0.4)",
-                }
-              );
-            }
-          },
-        });
-      } else {
-        setMode("idle");
-      }
-    };
-
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerup", handlePointerUp);
-
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerup", handlePointerUp);
-    };
-  }, [isDragging, saveX, triggerClap, setMode, setPos, posRef, setIsDragging, setIsFalling]);
-
-  // Listen for global easter egg events (typing "action" and Konami flip)
-  useEffect(() => {
-    const handleMascotClap = () => {
-      triggerClap();
-    };
-
     const handleMascotFlip = () => {
-      if (!squashRef.current) return;
-      gsap.to(squashRef.current, {
+      if (!containerRef.current) return;
+      gsap.to(containerRef.current, {
         rotation: "+=360",
-        y: -35,
-        duration: 0.75,
+        y: -30,
+        duration: 0.7,
         ease: "power2.inOut",
         onComplete: () => {
-          gsap.to(squashRef.current, {
+          gsap.to(containerRef.current, {
             y: 0,
             duration: 0.25,
             ease: "bounce.out",
@@ -142,100 +42,64 @@ export function Mascot() {
       });
     };
 
-    window.addEventListener("mascot-clap", handleMascotClap);
     window.addEventListener("mascot-flip", handleMascotFlip);
+    return () => window.removeEventListener("mascot-flip", handleMascotFlip);
+  }, []);
 
-    return () => {
-      window.removeEventListener("mascot-clap", handleMascotClap);
-      window.removeEventListener("mascot-flip", handleMascotFlip);
-    };
-  }, [triggerClap]);
+  // Squash & bounce on impact when landing from fall
+  useEffect(() => {
+    if (state === "fall" && containerRef.current) {
+      // Landing bounce is triggered in useMascot onComplete
+    }
+  }, [state]);
 
-  const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
-    e.preventDefault();
-    markActive();
-    clickMovedRef.current = false;
+  if (!isMounted) {
+    // Render at fixed bottom-right immediately even during hydration
+    return (
+      <div
+        aria-hidden="true"
+        className="fixed bottom-6 right-8 z-[60] pointer-events-none select-none opacity-0"
+      />
+    );
+  }
 
-    dragStartRef.current = {
-      mouseX: e.clientX,
-      mouseY: e.clientY,
-      initX: pos.x,
-      initY: pos.y,
-    };
-
-    setIsDragging(true);
-    setMode("dangling");
-  };
-
-  // Rotation tilt depending on state
-  let rotation = 0;
-  if (mode === "running-forward") rotation = 14;
-  else if (mode === "running-backward") rotation = -14;
-  else if (mode === "dangling") rotation = 4;
-
-  const isSitting = mode === "sitting" || mode === "sleeping";
-  const isSleeping = mode === "sleeping";
+  const isDragging = state === "drag";
 
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-50 overflow-hidden select-none"
+      className="fixed inset-0 pointer-events-none z-[60] overflow-hidden select-none"
     >
       <div
-        className="absolute will-change-transform"
+        ref={containerRef}
         style={{
           transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
-          transition: isDragging || isFalling ? "none" : "transform 0.15s ease-out",
+          transition: isDragging || state === "fall" ? "none" : "transform 0.15s ease-out",
         }}
+        className="absolute top-0 left-0 will-change-transform"
       >
-        <svg
-          viewBox="0 0 100 120"
+        <div
           onPointerDown={handlePointerDown}
-          className={`w-14 h-16 sm:w-20 sm:h-24 pointer-events-auto transition-transform duration-200 ${
-            isDragging ? "cursor-grabbing" : "cursor-grab"
+          className={`pointer-events-auto cursor-grab active:cursor-grabbing transition-transform duration-150 ${
+            isDragging ? "scale-105" : "hover:scale-105"
           }`}
-          style={{
-            transform: `rotate(${rotation}deg)`,
-            transformOrigin: "50px 80px",
-            touchAction: "none",
-          }}
+          style={{ touchAction: "none" }}
+          role="img"
+          aria-label="Interactive camera mascot"
         >
-          {/* Squash and bounce container */}
-          <g
-            ref={squashRef}
-            style={{ transformOrigin: "50px 96px" }}
-          >
-            {/* Clapperboard Head with eyes and single accent detail */}
-            <ClapperHead
-              isClapping={isClapping}
-              isBlinking={isBlinking}
-              isSleeping={isSleeping}
-            />
-
-            {/* Torso */}
-            <MascotBody
-              isBreathing={isBreathing}
-              isSitting={isSitting}
-            />
-
-            {/* Arms and Legs */}
-            <MascotLimbs
-              mode={mode}
-              chapter={chapter}
-              runCycle={runCycle}
-              isClapping={isClapping}
-            />
-
-            {/* Laptop, Camera, Sleep Zs, and Speech Dialog */}
-            <MascotAccessories
-              chapter={chapter}
-              isSleeping={isSleeping}
-              speechText={speechText}
-            />
-          </g>
-        </svg>
+          <MascotSvg
+            state={state}
+            section={section}
+            pupil={pupil}
+            isBlinking={isBlinking}
+            isFlashing={isFlashing}
+            isBreathing={isBreathing}
+            speechText={speechText}
+            walkPhase={walkPhase}
+            walkDirection={walkDirection}
+          />
+        </div>
       </div>
     </div>
   );
 }
-
