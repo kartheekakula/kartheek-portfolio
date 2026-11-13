@@ -22,8 +22,8 @@ export default function Home() {
         <ProjectsSection />
       </div>
 
-      {/* Light Cream: Skills */}
-      <div className="w-full max-w-6xl mx-auto px-6 py-20 md:py-28 sm:px-12 md:px-20 lg:px-32">
+      {/* Light Cream: Skills (Pinned Circular Arc Scroller) */}
+      <div className="w-full">
         <SkillsSection />
       </div>
 

@@ -23,7 +23,9 @@ export interface Project {
 }
 
 export interface SkillCategory {
+  numeral: string;
   category: string;
+  description: string;
   items: string[];
 }
 
@@ -148,23 +150,33 @@ export const content: PortfolioContent = {
 
   skills: [
     {
+      numeral: "01",
       category: "Languages",
+      description: "Core languages I use to write backend logic, web interfaces, and scripts.",
       items: ["Java", "Python", "JavaScript", "TypeScript", "SQL"],
     },
     {
+      numeral: "02",
       category: "Frontend",
+      description: "Tools I rely on to build responsive, tactile web interfaces and smooth motion.",
       items: ["React", "Next.js", "Tailwind CSS", "GSAP"],
     },
     {
-      category: "Backend & Data",
+      numeral: "03",
+      category: "Backend",
+      description: "Servers, APIs, and databases I use to structure and persist application data.",
       items: ["Node.js", "REST APIs", "PostgreSQL", "MongoDB"],
     },
     {
-      category: "AI & Embedded",
+      numeral: "04",
+      category: "AI and Embedded",
+      description: "Edge hardware and intelligent models for processing real-world inputs.",
       items: ["OCR", "Computer Vision", "Raspberry Pi", "RAG"],
     },
     {
-      category: "Tools",
+      numeral: "05",
+      category: "Tools and Creative",
+      description: "Software I use daily for version control, interface design, video editing, and deployment.",
       items: ["Git", "Vercel", "Figma", "Premiere Pro", "DaVinci Resolve"],
     },
   ],
