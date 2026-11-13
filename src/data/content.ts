@@ -135,15 +135,17 @@ export const content: PortfolioContent = {
       category: "Founder Project",
       status: "In progress",
       year: "2026",
-      description: "[DESCRIPTION]",
-      tags: [],
+      description:
+        "A platform where filmmakers share short films, build portfolio profiles, and collaborate by craft.",
+      tags: ["Product", "Filmmaking", "Web"],
       previewImage: "/images/projects/arkee.jpg",
       caseStudy: {
         role: "Founder",
         year: "2026",
         status: "In progress",
-        summary: "[DESCRIPTION]",
-        what: "[DESCRIPTION]",
+        summary:
+          "A community and discovery platform for independent filmmakers.",
+        what: "A focused space for directors, cinematographers, and editors to showcase their work and connect for productions.",
         how: "Currently developing the core platform architecture and validating the workflow directly with filmmakers.",
       },
     },
@@ -188,7 +190,9 @@ export const content: PortfolioContent = {
       org: "Arkee",
       period: "2026",
       tags: ["Startup", "Product"],
-      bullets: ["[placeholder]"],
+      bullets: [
+        "Developing the core platform architecture and validating the workflow directly with filmmakers.",
+      ],
     },
     {
       role: "Product Analyst",
