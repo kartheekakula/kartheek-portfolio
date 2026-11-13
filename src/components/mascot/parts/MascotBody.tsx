@@ -21,8 +21,8 @@ export function MascotBody({ isBreathing, isSitting }: MascotBodyProps) {
             ? "M40 54 Q36 68 38 72 Q50 75 62 72 Q64 68 60 54 Z"
             : "M40 54 Q37 65 40 73 Q50 76 60 73 Q63 65 60 54 Z"
         }
-        fill="#161613"
-        stroke="#ECE7DC"
+        fill="#15120E"
+        stroke="#15120E"
         strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -31,7 +31,7 @@ export function MascotBody({ isBreathing, isSitting }: MascotBodyProps) {
       {/* Subtle hand-drawn fold lines */}
       <path
         d="M48 60 L52 60"
-        stroke="#ECE7DC"
+        stroke="#F4ECDD"
         strokeWidth="1.2"
         strokeOpacity="0.4"
         strokeLinecap="round"
@@ -39,4 +39,3 @@ export function MascotBody({ isBreathing, isSitting }: MascotBodyProps) {
     </g>
   );
 }
-

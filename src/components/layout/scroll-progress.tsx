@@ -34,9 +34,8 @@ export function ScrollProgress() {
   return (
     <div
       aria-hidden="true"
-      className="fixed top-0 left-0 right-0 h-[1px] bg-accent z-50 pointer-events-none origin-left transition-transform duration-75 ease-out"
+      className="fixed top-0 left-0 right-0 h-[1px] bg-tangerine z-50 pointer-events-none origin-left transition-transform duration-75 ease-out"
       style={{ transform: `scaleX(${progress})` }}
     />
   );
 }
-

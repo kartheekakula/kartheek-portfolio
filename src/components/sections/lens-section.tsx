@@ -88,7 +88,7 @@ export function LensSection() {
     return () => ctx.revert();
   }, []);
 
-  // 2. Horizontally scrolling pinned film strip (Part A)
+  // 2. Horizontally scrolling pinned film strip
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -157,36 +157,33 @@ export function LensSection() {
       <div
         ref={letterboxTopRef}
         aria-hidden="true"
-        className="fixed top-0 left-0 right-0 h-4 md:h-6 bg-black z-50 pointer-events-none -translate-y-full will-change-transform border-b border-line/40"
+        className="fixed top-0 left-0 right-0 h-4 md:h-6 bg-ink z-50 pointer-events-none -translate-y-full will-change-transform border-b border-line/40"
       />
       <div
         ref={letterboxBottomRef}
         aria-hidden="true"
-        className="fixed bottom-0 left-0 right-0 h-4 md:h-6 bg-black z-50 pointer-events-none translate-y-full will-change-transform border-t border-line/40"
+        className="fixed bottom-0 left-0 right-0 h-4 md:h-6 bg-ink z-50 pointer-events-none translate-y-full will-change-transform border-t border-line/40"
       />
 
       <section
         id="lens"
         ref={sectionRef}
-        className="flex flex-col gap-20 md:gap-32 scroll-mt-28 border-t border-line pt-16 md:pt-24"
+        className="flex flex-col gap-20 md:gap-28 scroll-mt-28 border-t border-line pt-12 md:pt-16"
       >
-        {/* Chapter Header */}
-        <div className="flex items-baseline justify-between border-b border-line pb-4">
-          <span className="font-mono text-xs uppercase tracking-widest text-muted">
-            04 // THE LENS
-          </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-muted">
-            Motion Picture & Still Observations
-          </span>
+        {/* Plain Section Heading */}
+        <div className="border-b border-line pb-4">
+          <h2 className="text-xs uppercase tracking-widest text-muted font-sans font-medium">
+            Lens
+          </h2>
         </div>
 
-        {/* ---------------- PART A: FILMS ---------------- */}
+        {/* ---------------- FILMS ---------------- */}
         <div className="flex flex-col gap-8">
           <div className="flex items-baseline justify-between border-b border-line pb-3">
-            <h3 className="font-mono text-xs uppercase tracking-widest text-text">
-              Part A // Moving Image [ Pin Scrub ]
+            <h3 className="font-sans text-xs uppercase tracking-widest text-ink font-medium">
+              Films
             </h3>
-            <span className="font-mono text-xs text-muted">
+            <span className="font-sans text-xs text-muted">
               {films.length.toString().padStart(2, "0")} Entries
             </span>
           </div>
@@ -211,54 +208,44 @@ export function LensSection() {
                       src={film.thumbnail}
                       alt={film.title}
                       fill
+                      loading="lazy"
                       sizes="(max-width: 768px) 300px, 540px"
                       className="object-cover grayscale contrast-125 opacity-85 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"
                     />
 
                     {/* Overlay cue */}
-                    <div className="absolute inset-0 bg-bg/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <span className="font-mono text-xs uppercase tracking-widest text-text border border-line bg-bg/90 px-3 py-1.5 flex items-center gap-2">
+                    <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <span className="font-sans text-xs uppercase tracking-widest text-cream border border-line bg-ink/90 px-3 py-1.5 flex items-center gap-2">
                         <span>Play Reel</span>
-                        <span className="text-accent">▶</span>
+                        <span className="text-tangerine">▶</span>
                       </span>
-                    </div>
-
-                    <div className="absolute bottom-2 left-2 font-mono text-[10px] text-muted bg-bg/80 border border-line px-1.5 py-0.5">
-                      {film.duration}
                     </div>
                   </div>
 
                   {/* Metadata */}
                   <div className="flex items-baseline justify-between pt-1">
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs text-muted">
+                      <span className="font-sans text-xs text-muted">
                         {(idx + 1).toString().padStart(2, "0")}
                       </span>
-                      <h4 className="font-display text-lg sm:text-xl text-text font-normal group-hover:text-accent transition-colors">
+                      <h4 className="font-serif text-lg sm:text-xl text-ink font-normal group-hover:text-tangerine transition-colors">
                         {film.title}
                       </h4>
                     </div>
-                    <span className="font-mono text-xs text-muted">
-                      {film.year}
-                    </span>
                   </div>
-
-                  <p className="font-story text-sm text-muted line-clamp-2">
-                    {film.summary}
-                  </p>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* ---------------- PART B: PHOTOGRAPHY ---------------- */}
+        {/* ---------------- PHOTOGRAPHY ---------------- */}
         <div className="flex flex-col gap-8">
           <div className="flex items-baseline justify-between border-b border-line pb-3">
-            <h3 className="font-mono text-xs uppercase tracking-widest text-text">
-              Part B // Still Image [ Lightbox & Optics ]
+            <h3 className="font-sans text-xs uppercase tracking-widest text-ink font-medium">
+              Photography
             </h3>
-            <span className="font-mono text-xs text-muted">
+            <span className="font-sans text-xs text-muted">
               {photos.length.toString().padStart(2, "0")} Frames
             </span>
           </div>
@@ -269,7 +256,7 @@ export function LensSection() {
               <figure
                 key={photo.id}
                 onClick={() => setActivePhotoIdx(idx)}
-                className="group cursor-pointer flex flex-col gap-2.5 border border-line p-3 bg-surface/20 transition-colors hover:border-accent"
+                className="group cursor-pointer flex flex-col gap-2.5 border border-line p-3 bg-surface/30 transition-colors hover:border-tangerine"
               >
                 <div
                   className={`relative ${photo.aspectClass} w-full overflow-hidden bg-surface`}
@@ -278,21 +265,18 @@ export function LensSection() {
                     src={photo.src}
                     alt={photo.title}
                     fill
+                    loading="lazy"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover grayscale contrast-125 transition-all duration-500 group-hover:grayscale-0 group-hover:contrast-100 group-hover:scale-105"
                   />
-                  <div className="absolute top-2 right-2 font-mono text-[9px] uppercase tracking-wider text-muted bg-bg/80 border border-line px-1.5 py-0.5">
+                  <div className="absolute top-2 right-2 font-sans text-[10px] uppercase tracking-wider text-muted bg-cream/90 border border-line px-1.5 py-0.5">
                     {(idx + 1).toString().padStart(2, "0")}
                   </div>
                 </div>
 
-                <figcaption className="flex flex-col gap-1 pt-1 font-mono text-[11px]">
-                  <div className="flex items-baseline justify-between text-text">
+                <figcaption className="flex flex-col gap-1 pt-1 font-sans text-[11px]">
+                  <div className="flex items-baseline justify-between text-ink">
                     <span className="font-medium">{photo.title}</span>
-                    <span className="text-muted">{photo.year}</span>
-                  </div>
-                  <div className="text-muted text-[10px] truncate">
-                    {photo.camera} // {photo.location}
                   </div>
                 </figcaption>
               </figure>
@@ -306,7 +290,7 @@ export function LensSection() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-bg/95 flex flex-col items-center justify-center p-4 sm:p-8 animate-fadeIn"
+          className="fixed inset-0 z-50 bg-ink/95 flex flex-col items-center justify-center p-4 sm:p-8 animate-fadeIn"
           onClick={() => setActiveFilm(null)}
         >
           <div
@@ -314,16 +298,16 @@ export function LensSection() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal top bar */}
-            <div className="flex items-center justify-between font-mono text-xs text-muted border-b border-line pb-3">
-              <span className="uppercase tracking-widest text-text">
-                Reel // {activeFilm.title} ({activeFilm.year})
+            <div className="flex items-center justify-between font-sans text-xs text-muted border-b border-line pb-3">
+              <span className="uppercase tracking-widest text-cream">
+                {activeFilm.title}
               </span>
               <button
                 type="button"
                 onClick={() => setActiveFilm(null)}
-                className="hover:text-accent transition-colors uppercase tracking-wider cursor-pointer"
+                className="hover:text-tangerine transition-colors uppercase tracking-wider cursor-pointer font-medium"
               >
-                [ Close ESC ]
+                Close (Esc)
               </button>
             </div>
 
@@ -337,11 +321,6 @@ export function LensSection() {
                 className="w-full h-full border-0"
               />
             </div>
-
-            <div className="flex items-baseline justify-between font-mono text-xs text-muted">
-              <span>{activeFilm.role}</span>
-              <span>Duration: {activeFilm.duration}</span>
-            </div>
           </div>
         </div>
       )}
@@ -351,30 +330,28 @@ export function LensSection() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-bg/95 flex flex-col justify-between p-6 sm:p-10 select-none animate-fadeIn"
+          className="fixed inset-0 z-50 bg-ink/95 flex flex-col justify-between p-6 sm:p-10 select-none animate-fadeIn"
           onClick={() => setActivePhotoIdx(null)}
         >
           {/* Lightbox Header with Counter */}
           <div
-            className="flex items-center justify-between font-mono text-xs text-muted border-b border-line pb-3 max-w-6xl w-full mx-auto"
+            className="flex items-center justify-between font-sans text-xs text-muted border-b border-line pb-3 max-w-6xl w-full mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="tracking-widest uppercase text-text font-medium">
-              PHOTO{" "}
-              {((activePhotoIdx ?? 0) + 1).toString().padStart(2, "0")} /{" "}
-              {photos.length.toString().padStart(2, "0")}
+            <span className="tracking-widest uppercase text-cream font-medium">
+              PHOTO {((activePhotoIdx ?? 0) + 1).toString().padStart(2, "0")} of {photos.length.toString().padStart(2, "0")}
             </span>
 
             <div className="flex items-center gap-6">
               <span className="hidden sm:inline text-muted/60 text-[11px]">
-                [ ← / → Navigate ]
+                Arrow keys to navigate
               </span>
               <button
                 type="button"
                 onClick={() => setActivePhotoIdx(null)}
-                className="hover:text-accent transition-colors uppercase tracking-wider cursor-pointer"
+                className="hover:text-tangerine transition-colors uppercase tracking-wider cursor-pointer font-medium"
               >
-                [ Close ESC ]
+                Close (Esc)
               </button>
             </div>
           </div>
@@ -398,23 +375,13 @@ export function LensSection() {
 
           {/* Lightbox Caption Footer */}
           <div
-            className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 font-mono text-xs text-muted border-t border-line pt-3 max-w-6xl w-full mx-auto"
+            className="flex items-baseline justify-between font-sans text-xs text-muted border-t border-line pt-3 max-w-6xl w-full mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-baseline gap-3">
-              <span className="text-text font-normal">{activePhoto.title}</span>
-              <span className="text-muted/60">({activePhoto.year})</span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4 text-xs">
-              <span className="text-text/80">{activePhoto.camera}</span>
-              <span className="text-muted/40">//</span>
-              <span>{activePhoto.location}</span>
-            </div>
+            <span className="text-cream font-normal">{activePhoto.title}</span>
           </div>
         </div>
       )}
     </>
   );
 }
-

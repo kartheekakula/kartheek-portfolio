@@ -17,7 +17,6 @@ export function AudioToggle() {
         await audioRef.current.play();
         setIsPlaying(true);
       } catch (error) {
-        // Handle browser autoplay restriction or missing media file gracefully
         console.warn("Audio playback issue:", error);
         setIsPlaying(true);
       }
@@ -26,25 +25,28 @@ export function AudioToggle() {
 
   return (
     <div className="fixed bottom-5 right-6 sm:right-12 md:right-20 lg:right-32 z-40">
+      {/* Audio element is completely hidden and only controlled by the button */}
       <audio
         ref={audioRef}
         src="/audio/ambient.mp3"
         preload="none"
         loop
+        className="hidden"
+        aria-hidden="true"
       />
       <button
         type="button"
         onClick={toggleSound}
-        className="font-mono text-[11px] tracking-widest uppercase transition-colors mix-blend-difference focus:outline-none cursor-pointer"
+        className="font-sans text-xs tracking-widest uppercase transition-colors mix-blend-difference focus:outline-none cursor-pointer"
         aria-label={`Toggle sound: currently ${isPlaying ? "on" : "off"}`}
       >
-        <span className="text-muted hover:text-text transition-colors">
+        <span className="text-white/80 hover:text-white transition-colors">
           SOUND{" "}
-          <span className={!isPlaying ? "text-accent font-medium" : "text-muted"}>
+          <span className={!isPlaying ? "text-tangerine font-medium" : "text-white/60"}>
             OFF
           </span>{" "}
-          /{" "}
-          <span className={isPlaying ? "text-accent font-medium" : "text-muted"}>
+          ·{" "}
+          <span className={isPlaying ? "text-tangerine font-medium" : "text-white/60"}>
             ON
           </span>
         </span>
@@ -52,4 +54,3 @@ export function AudioToggle() {
     </div>
   );
 }
-

@@ -1,9 +1,5 @@
-import type { Metadata } from "next";
-import {
-  Bricolage_Grotesque,
-  Instrument_Serif,
-  JetBrains_Mono,
-} from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Playfair_Display, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { FilmGrain } from "@/components/film-grain";
@@ -11,32 +7,62 @@ import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { TopNav } from "@/components/layout/top-nav";
 import { BottomHud } from "@/components/layout/bottom-hud";
 import { AudioToggle } from "@/components/layout/audio-toggle";
-import { Mascot } from "@/components/mascot/Mascot";
-import { TerminalOverlay } from "@/components/easter-eggs/terminal-overlay";
+import { ClientWidgets } from "@/components/layout/client-widgets";
 
-const bricolage = Bricolage_Grotesque({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-bricolage",
+  weight: ["400", "500", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: "400",
-  style: "italic",
-  variable: "--font-instrument-serif",
+  variable: "--font-space-grotesk",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-});
+export const viewport: Viewport = {
+  themeColor: "#F4ECDD",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
-  title: "Kartheek — Portfolio",
-  description: "Software designer & engineer shaping focused digital artifacts and quiet systems.",
+  metadataBase: new URL("https://kartheek.dev"),
+  title: {
+    default: "Kartheek",
+    template: "%s | Kartheek",
+  },
+  description: "Portfolio of Kartheek.",
+  authors: [{ name: "Kartheek", url: "mailto:kartheekav29@gmail.com" }],
+  creator: "Kartheek",
+  openGraph: {
+    title: "Kartheek",
+    description: "Portfolio of Kartheek.",
+    url: "https://kartheek.dev",
+    siteName: "Kartheek",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kartheek",
+    description: "Portfolio of Kartheek.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -47,16 +73,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${bricolage.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+      className={`${playfair.variable} ${spaceGrotesk.variable}`}
     >
-      <body className="bg-bg text-text font-display min-h-screen relative antialiased">
+      <body className="bg-cream text-ink font-sans min-h-screen relative antialiased overflow-x-hidden selection:bg-tangerine selection:text-white">
         <ScrollProgress />
         <FilmGrain />
         <TopNav />
         <BottomHud />
         <AudioToggle />
-        <Mascot />
-        <TerminalOverlay />
+        <ClientWidgets />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>

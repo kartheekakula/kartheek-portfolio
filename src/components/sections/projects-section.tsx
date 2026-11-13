@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
@@ -59,7 +58,6 @@ export function ProjectsSection() {
 
     const handleMouseMove = (e: MouseEvent) => {
       if (xTo.current && yTo.current) {
-        // Offset slightly from cursor for clean sightlines
         xTo.current(e.clientX + 24);
         yTo.current(e.clientY - 110);
       }
@@ -151,16 +149,13 @@ export function ProjectsSection() {
     <section
       id="work"
       ref={sectionRef}
-      className="flex flex-col gap-12 md:gap-16 scroll-mt-28 border-t border-line pt-16 md:pt-24"
+      className="flex flex-col gap-12 md:gap-16 scroll-mt-28"
     >
-      {/* Chapter Label */}
+      {/* Plain Section Heading */}
       <div className="flex items-baseline justify-between border-b border-line pb-4">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted">
-          02 // THE BUILD
-        </span>
-        <span className="font-mono text-xs uppercase tracking-widest text-muted">
-          Selected Engineering Works [ 0{projects.length} ]
-        </span>
+        <h2 className="text-xs uppercase tracking-widest text-muted font-sans font-medium">
+          Projects
+        </h2>
       </div>
 
       {/* Floating Preview Image for desktop (GSAP quickTo) */}
@@ -179,9 +174,11 @@ export function ProjectsSection() {
                 sizes="288px"
                 className="object-cover grayscale contrast-125 opacity-95"
               />
-              <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-text bg-bg/80 px-2 py-1 border border-line">
-                <span>{activeProject.numeral} // {activeProject.title}</span>
-                <span className="text-accent">{activeProject.status}</span>
+              <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between font-sans text-[11px] uppercase tracking-wider text-cream bg-ink/90 px-2 py-1 border border-line">
+                <span>{activeProject.numeral} · {activeProject.title}</span>
+                {activeProject.status && (
+                  <span className="text-tangerine">{activeProject.status}</span>
+                )}
               </div>
             </div>
           )}
@@ -208,7 +205,7 @@ export function ProjectsSection() {
             >
               {/* Left: Big numeral */}
               <div className="md:col-span-2">
-                <span className="font-display text-4xl sm:text-6xl md:text-7xl font-light text-text/80 tracking-tighter leading-none group-hover:text-accent transition-colors">
+                <span className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal text-cream/90 tracking-tight leading-none group-hover:text-tangerine transition-colors">
                   {project.numeral}
                 </span>
               </div>
@@ -216,69 +213,75 @@ export function ProjectsSection() {
               {/* Middle: Category, Title, Description, Tags */}
               <div className="md:col-span-7 flex flex-col gap-4">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+                  <span className="font-sans text-[11px] uppercase tracking-widest text-muted">
                     {project.category}
                   </span>
                   {project.badge && (
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-accent border border-accent/40 px-1.5 py-0.2">
+                    <span className="font-sans text-[10px] uppercase tracking-wider text-tangerine border border-tangerine/40 px-1.5 py-0.5">
                       {project.badge}
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl md:text-4xl text-text font-normal tracking-tight group-hover:text-accent transition-colors">
+                <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl text-cream font-normal tracking-tight group-hover:text-tangerine transition-colors">
                   {project.title}
                 </h3>
 
-                <p className="text-muted text-sm sm:text-base font-light leading-relaxed max-w-2xl">
+                <p className="text-muted text-sm sm:text-base font-normal leading-relaxed max-w-2xl font-sans">
                   {project.description}
                 </p>
 
-                {/* Tech tags separated by slashes (not pills) */}
-                <div className="font-mono text-xs text-muted/80 tracking-wider pt-1">
-                  {project.tags.join(" / ")}
-                </div>
+                {/* Tech tags separated by middle dot */}
+                {project.tags.length > 0 && (
+                  <div className="font-sans text-xs text-muted/80 tracking-wider pt-1">
+                    {project.tags.join(" · ")}
+                  </div>
+                )}
               </div>
 
               {/* Right: Status & Links */}
               <div className="md:col-span-3 flex flex-col sm:items-end justify-between self-stretch gap-6 pt-1">
-                {/* Status indicator */}
-                <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider">
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      project.status === "Live"
-                        ? "bg-accent"
-                        : "bg-muted animate-pulse"
-                    }`}
-                  />
-                  <span className="text-text">{project.status}</span>
-                </div>
+                {/* Status indicator if present */}
+                {project.status ? (
+                  <div className="flex items-center gap-2 font-sans text-xs uppercase tracking-wider">
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        project.status === "Live"
+                          ? "bg-tangerine"
+                          : "bg-muted animate-pulse"
+                      }`}
+                    />
+                    <span className="text-cream">{project.status}</span>
+                  </div>
+                ) : (
+                  <div />
+                )}
 
                 {/* Case study cue & External Links */}
-                <div className="flex flex-col sm:items-end gap-2.5 font-mono text-xs uppercase tracking-wider">
-                  <span className="text-text group-hover:text-accent transition-colors flex items-center gap-1 font-medium">
+                <div className="flex flex-col sm:items-end gap-2.5 font-sans text-xs uppercase tracking-wider">
+                  <span className="text-cream group-hover:text-tangerine transition-colors flex items-center gap-1 font-medium">
                     Read Case Study <span>→</span>
                   </span>
 
                   <div className="flex items-center gap-4 text-muted pt-1">
-                    {project.liveUrl && (
+                    {project.liveUrl && project.liveUrl !== "TODO" && (
                       <a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="hover:text-text transition-colors flex items-center gap-1"
+                        className="hover:text-cream transition-colors flex items-center gap-1"
                       >
                         View live <span>↗</span>
                       </a>
                     )}
-                    {project.githubUrl && (
+                    {project.githubUrl && project.githubUrl !== "TODO" && (
                       <a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="hover:text-text transition-colors flex items-center gap-1"
+                        className="hover:text-cream transition-colors flex items-center gap-1"
                       >
                         GitHub <span>↗</span>
                       </a>
@@ -293,4 +296,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-

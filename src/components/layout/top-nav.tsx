@@ -1,18 +1,26 @@
 "use client";
 
+import { useState } from "react";
+
 const NAV_ITEMS = [
   { label: "Work", href: "#work" },
-  { label: "Story", href: "#story" },
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
   { label: "Lens", href: "#lens" },
   { label: "Contact", href: "#contact" },
 ];
 
 export function TopNav() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const handleScroll = (
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
     e.preventDefault();
+    setMobileMenuOpen(false);
+
     if (href === "#") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
@@ -29,19 +37,21 @@ export function TopNav() {
         <a
           href="#"
           onClick={(e) => handleScroll(e, "#")}
-          className="font-mono text-xs uppercase tracking-widest text-text hover:text-accent transition-colors pointer-events-auto"
+          className="font-sans text-xs uppercase tracking-widest text-white hover:text-tangerine transition-colors pointer-events-auto font-medium"
+          aria-label="Kartheek - Back to Top"
         >
           KARTHEEK
         </a>
 
-        <nav aria-label="Main Navigation">
-          <ul className="flex items-center gap-5 sm:gap-8 font-mono text-xs uppercase tracking-wider text-muted">
+        {/* Desktop Nav */}
+        <nav aria-label="Main Navigation" className="hidden sm:block">
+          <ul className="flex items-center gap-6 md:gap-8 font-sans text-xs uppercase tracking-wider text-white/80">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
                 <a
                   href={item.href}
                   onClick={(e) => handleScroll(e, item.href)}
-                  className="hover:text-text transition-colors pointer-events-auto"
+                  className="hover:text-white transition-colors pointer-events-auto py-1 font-medium"
                 >
                   {item.label}
                 </a>
@@ -49,8 +59,43 @@ export function TopNav() {
             ))}
           </ul>
         </nav>
+
+        {/* Mobile Menu Toggle Button */}
+        <div className="sm:hidden pointer-events-auto">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className="font-sans text-xs uppercase tracking-widest text-white hover:text-tangerine transition-colors py-1 cursor-pointer font-medium"
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? "CLOSE" : "MENU"}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <nav
+          aria-label="Mobile Navigation"
+          className="sm:hidden pointer-events-auto mt-4 border border-line bg-cream p-6 animate-fadeIn shadow-2xl"
+          style={{ mixBlendMode: "normal" }}
+        >
+          <ul className="flex flex-col gap-4 font-sans text-xs uppercase tracking-widest text-muted">
+            {NAV_ITEMS.map((item) => (
+              <li key={item.label} className="border-b border-line/40 pb-2">
+                <a
+                  href={item.href}
+                  onClick={(e) => handleScroll(e, item.href)}
+                  className="hover:text-ink transition-colors block font-medium"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </header>
   );
 }
-

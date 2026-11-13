@@ -1,19 +1,19 @@
 export interface ProjectCaseStudy {
-  role: string;
-  year: string;
-  stack: string;
-  status: string;
-  problem: {
+  role?: string;
+  year?: string;
+  stack?: string;
+  status?: string;
+  problem?: {
     summary: string;
     details: string[];
     image?: string;
   };
-  approach: {
+  approach?: {
     summary: string;
     details: string[];
     image?: string;
   };
-  result: {
+  result?: {
     summary: string;
     details: string[];
     videoEmbed?: string;
@@ -28,15 +28,15 @@ export interface Project {
   title: string;
   category: string;
   badge?: string;
-  status: "Live" | "In progress";
+  status?: string;
   year: string;
-  role: string;
+  role?: string;
   description: string;
   tags: string[];
   liveUrl?: string;
   githubUrl?: string;
   previewImage: string;
-  caseStudy: ProjectCaseStudy;
+  caseStudy?: ProjectCaseStudy;
 }
 
 export interface SkillCategory {
@@ -68,9 +68,9 @@ export interface Photo {
   id: string;
   title: string;
   caption?: string;
-  camera: string;
-  location: string;
-  year: string;
+  camera?: string;
+  location?: string;
+  year?: string;
   src: string;
   aspectClass: string;
 }
@@ -78,52 +78,26 @@ export interface Photo {
 export interface Film {
   id: string;
   title: string;
-  year: string;
-  role: string;
-  duration: string;
-  summary: string;
+  year?: string;
+  role?: string;
+  duration?: string;
+  summary?: string;
   youtubeId: string;
   thumbnail: string;
   aspect?: string;
 }
 
-export interface Fact {
-  label: string;
-  value: string;
-}
-
-export interface AboutLink {
-  label: string;
-  href: string;
-  download?: boolean;
-}
-
-export interface AboutChapter {
-  chapter: string;
-  title: string;
-  lines: string[];
-  photo: {
-    src: string;
-    caption: string;
-    alt: string;
-  };
-  facts: Fact[];
-  links: AboutLink[];
-}
-
 export interface PortfolioContent {
   name: string;
-  tagline: string;
-  bio: {
-    intro: string;
-    narrative: string[];
-  };
-  about: AboutChapter;
+  email: string;
+  heroStatement: string;
+  aboutText: string;
+  contactLine: string;
+  experienceClosingNote: string;
   projects: Project[];
   skills: SkillCategory[];
   experience: Experience[];
   education: Education[];
-  experienceClosingNote: string;
   socials: SocialLink[];
   photos: Photo[];
   films: Film[];
@@ -131,40 +105,12 @@ export interface PortfolioContent {
 
 export const content: PortfolioContent = {
   name: "Kartheek",
-  tagline: "Software designer & engineer shaping focused digital artifacts and quiet systems.",
-  bio: {
-    intro: "Working at the intersection of systems architecture, interactive craft, and computational design.",
-    narrative: [
-      "I believe software should feel tactile, intentional, and stripped of unnecessary noise. Every detail is balanced between technical rigour and editorial clarity.",
-      "Rooted in minimalism, high performance, and enduring typography. Exploring interfaces that feel deliberate rather than generative.",
-    ],
-  },
-  about: {
-    chapter: "01",
-    title: "THE EYE",
-    lines: [
-      "I started with a camera and an editing timeline.",
-      "That taught me how to notice.",
-      "Then I learned code, and found out you can build the thing, not just film it.",
-    ],
-    photo: {
-      src: "/images/portrait.jpg",
-      caption: "FIG. 01 — ME, MOSTLY",
-      alt: "Portrait of Kartheek",
-    },
-    facts: [
-      { label: "Based in", value: "Hyderabad, India" },
-      { label: "Studying", value: "Computer Science & Engineering" },
-      { label: "Interested in", value: "Quiet Systems, Compilers & Analog Motion" },
-    ],
-    links: [
-      { label: "GitHub", href: "https://github.com/kartheekakula" },
-      { label: "LinkedIn", href: "https://linkedin.com" },
-      { label: "Instagram", href: "https://instagram.com" },
-      { label: "YouTube", href: "https://youtube.com" },
-      { label: "Resume", href: "/resume.pdf", download: true },
-    ],
-  },
+  email: "kartheekav29@gmail.com",
+  heroStatement: "[HERO STATEMENT]",
+  aboutText: "[ABOUT STATEMENT]",
+  contactLine: "[CONTACT STATEMENT]",
+  experienceClosingNote: "[CLOSING NOTE]",
+
   projects: [
     {
       id: "edge-ocr",
@@ -172,44 +118,40 @@ export const content: PortfolioContent = {
       slug: "edge-ocr",
       title: "Edge-OCR Bus Route Identifier",
       category: "Embedded · Computer Vision · Accessibility",
-      status: "Live",
       year: "2025",
-      role: "Hardware & Edge ML Lead",
       description:
         "A low-cost wearable built on a Raspberry Pi Zero 2 W that reads bus route numbers using on-device OCR and announces them through audio and tactile feedback for visually impaired commuters.",
       tags: ["Raspberry Pi", "Python", "OCR", "Edge AI", "Accessibility"],
-      liveUrl: "https://github.com/kartheekakula",
-      githubUrl: "https://github.com/kartheekakula",
       previewImage: "/images/projects/edge-ocr.jpg",
       caseStudy: {
-        role: "Embedded ML & Hardware Engineering",
+        role: "Hardware & Edge ML Lead",
         year: "2025",
-        stack: "Raspberry Pi Zero 2 W / Python / OpenCV / Tesseract / TTS",
-        status: "Field Prototype Tested",
+        stack: "Raspberry Pi Zero 2 W, Python, OpenCV, Tesseract",
+        status: "Prototype Tested",
         problem: {
           summary:
             "Visually impaired commuters in rapid transit terminals struggle to discern approaching municipal bus routes without sighted assistance.",
           details: [
             "Transit marquee LED signs suffer from rapid flicker, harsh sunlight reflection, and variable approach velocities.",
-            "Smartphone apps require users to hold up a phone while navigating with a white cane, introducing physical vulnerability and severe battery drain.",
-            "Cloud-dependent vision APIs impose prohibitive latency (>800ms) and collapse in subterranean or congested cellular zones.",
+            "Smartphone apps require users to hold up a phone while navigating with a white cane, introducing physical vulnerability.",
+            "Cloud-dependent vision APIs impose high latency and fail in subterranean or congested cellular zones.",
           ],
         },
         approach: {
           summary:
             "Designed a hands-free chest rig that processes optical frames entirely on-chip in real time.",
           details: [
-            "Mounted a wide-angle camera module and Raspberry Pi Zero 2 W in a compact 3D-printed enclosure with passive thermal routing.",
-            "Constructed a dual-stage vision pipeline: an adaptive Otsu thresholding stage isolates marquee bounding boxes, feeding a quantized Tesseract engine optimized for numeric sequences.",
-            "Implemented dual-mode sensory feedback: immediate high-contrast bone-conduction voice synthesis paired with a haptic pulse module confirming recognition in under 350ms.",
+            "Mounted a wide-angle camera module and Raspberry Pi Zero 2 W in a compact enclosure.",
+            "Constructed a dual-stage vision pipeline with adaptive thresholding feeding quantized OCR.",
+            "Implemented immediate voice synthesis paired with a haptic pulse confirming recognition.",
           ],
         },
         result: {
           summary:
-            "Validated 91.4% field accuracy under diverse illumination with zero cellular connection.",
+            "Validated field accuracy under diverse illumination with zero cellular connection.",
           details: [
-            "Delivers 4.5 hours of continuous operation on a lightweight 2500mAh lithium cell.",
-            "Benchmarked over 14 transit stops in Hyderabad, demonstrating a 70% reduction in passenger transit hesitation.",
+            "Delivers continuous operation on a lightweight lithium cell.",
+            "Demonstrated noticeable reduction in passenger transit hesitation during field trials.",
           ],
         },
       },
@@ -219,57 +161,41 @@ export const content: PortfolioContent = {
       numeral: "02",
       slug: "arkee",
       title: "Arkee",
-      category: "Startup · Product · Systems",
-      badge: "FOUNDER PROJECT",
+      category: "Founder project",
+      badge: "Founder project",
       status: "In progress",
       year: "2026",
-      role: "Founder & Architect",
-      description:
-        "My own startup, currently being built and still being validated. A quiet system solving information density and operational friction for technical teams. Currently iterating on the core engine and testing customer viability.",
-      tags: [
-        "Founder Project",
-        "Next.js",
-        "TypeScript",
-        "Distributed Systems",
-        "CRDT",
-      ],
-      liveUrl: "https://arkee.dev",
-      githubUrl: "https://github.com/kartheekakula",
+      description: "[DESCRIPTION]",
+      tags: [],
       previewImage: "/images/projects/arkee.jpg",
       caseStudy: {
-        role: "Founder / Full Stack Architecture",
+        role: "Founder",
         year: "2026",
-        stack: "Next.js / TypeScript / CRDT / Tailwind CSS / PostgreSQL",
-        status: "Active Alpha & Customer Validation",
+        status: "In progress",
         problem: {
-          summary:
-            "Modern engineering and research workflows are overwhelmed by fragmented, bloated productivity suites.",
+          summary: "[DESCRIPTION]",
           details: [
-            "Teams waste hours navigating multi-layered menus, slow web apps, and noisy notification feeds designed for executive reporting rather than builder flow.",
-            "Current tools treat documentation, project telemetry, and technical decisions as separate silos, causing continuous mental context switching.",
-            "Existing collaborative tools rely on heavy client-side bundles and intrusive UI patterns that slow down high-speed thought.",
+            "Problem validation in progress.",
+            "Iterating on core concept.",
           ],
         },
         approach: {
-          summary:
-            "Architecting an unadorned, keyboard-first operating layer engineered around typography and local-first data synchronization.",
+          summary: "Building and testing the initial implementation.",
           details: [
-            "Building an editorial, distraction-free environment that unifies tasks, architecture decision records, and technical specs in a single unified hierarchy.",
-            "Implementing local-first CRDT synchronization to ensure every interaction occurs instantaneously at 0ms perceived latency, with seamless offline sync.",
-            "Engaging in continuous validation sprints with technical leads to test whether the stripped-down ergonomics measurably improve team execution velocity.",
+            "Developing foundational architecture.",
+            "Gathering early direct feedback.",
           ],
         },
         result: {
-          summary:
-            "Currently in closed pilot trials with selected early teams.",
+          summary: "Currently in testing.",
           details: [
-            "Observing workflow retention and gathering direct feedback on usability, keystroke shortcuts, and synchronicity.",
-            "Actively stress-testing multi-user conflict resolution before expanding access.",
+            "Evaluating whether the solution works as intended.",
           ],
         },
       },
     },
   ],
+
   skills: [
     {
       category: "Languages",
@@ -292,6 +218,7 @@ export const content: PortfolioContent = {
       items: ["Git", "Vercel", "Figma", "Premiere Pro", "DaVinci Resolve"],
     },
   ],
+
   experience: [
     {
       role: "Founder",
@@ -346,6 +273,7 @@ export const content: PortfolioContent = {
       ],
     },
   ],
+
   education: [
     {
       institution: "VIT-AP University",
@@ -358,140 +286,98 @@ export const content: PortfolioContent = {
       period: "2022–2024",
     },
   ],
-  experienceClosingNote:
-    "I'm early on the coding side. I'd rather say that plainly than oversell it.",
+
   socials: [
     {
-      platform: "GitHub",
-      label: "github.com/kartheekakula",
-      href: "https://github.com/kartheekakula",
-    },
-    {
       platform: "LinkedIn",
-      label: "linkedin.com/in/kartheek",
-      href: "https://linkedin.com",
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/kartheek-akula-648082322",
     },
     {
       platform: "Email",
-      label: "hello@kartheek.dev",
-      href: "mailto:hello@kartheek.dev",
+      label: "Email",
+      href: "mailto:kartheekav29@gmail.com",
     },
     {
-      platform: "ReadCV",
-      label: "read.cv/kartheek",
-      href: "https://read.cv",
+      platform: "GitHub",
+      label: "GitHub",
+      href: "TODO",
+    },
+    {
+      platform: "Instagram",
+      label: "Instagram",
+      href: "TODO",
+    },
+    {
+      platform: "YouTube",
+      label: "YouTube",
+      href: "TODO",
     },
   ],
+
   photos: [
     {
       id: "photo-01",
-      title: "Tokyo Monorail at Dawn",
-      caption: "Linear tracks slicing misty industrial corridors.",
-      camera: "Sony A7 IV · 35mm f/1.4 GM",
-      location: "Tokyo, Japan",
-      year: "2025",
+      title: "Photo 1",
       src: "/images/photos/tokyo-dawn.jpg",
       aspectClass: "aspect-[4/5]",
     },
     {
       id: "photo-02",
-      title: "Brutalist Concrete Horizon",
-      caption: "Sharp shadow intersections at Barbican Estate.",
-      camera: "Fujifilm X100V · 23mm f/2",
-      location: "London, Barbican",
-      year: "2024",
+      title: "Photo 2",
       src: "/images/photos/barbican.jpg",
       aspectClass: "aspect-[16/9]",
     },
     {
       id: "photo-03",
-      title: "Amaravati High Tension Grid",
-      caption: "Transmission towers disappearing into late twilight mist.",
-      camera: "Sony A7 IV · 85mm f/1.8",
-      location: "Amaravati, India",
-      year: "2025",
+      title: "Photo 3",
       src: "/images/photos/amaravati-grid.jpg",
       aspectClass: "aspect-[3/4]",
     },
     {
       id: "photo-04",
-      title: "Kyoto Temple Eaves",
-      caption: "Repetitive wooden joins weathered by rain and moss.",
-      camera: "Leica Q2 · 28mm f/1.7",
-      location: "Kyoto, Higashiyama",
-      year: "2024",
+      title: "Photo 4",
       src: "/images/photos/kyoto-eaves.jpg",
       aspectClass: "aspect-[1/1]",
     },
     {
       id: "photo-05",
-      title: "Late Night Metro Car",
-      caption: "Fluorescent hum reflected across curved steel stanchions.",
-      camera: "Ricoh GR IIIx · 40mm f/2.8",
-      location: "Hyderabad, India",
-      year: "2025",
+      title: "Photo 5",
       src: "/images/photos/metro-car.jpg",
       aspectClass: "aspect-[16/9]",
     },
     {
       id: "photo-06",
-      title: "Concrete Light Slice",
-      caption: "Early sun cutting sharp angles across geometric facades.",
-      camera: "Fujifilm X100V · 23mm f/2",
-      location: "Mumbai, India",
-      year: "2024",
+      title: "Photo 6",
       src: "/images/photos/concrete-light.jpg",
       aspectClass: "aspect-[4/5]",
     },
   ],
+
   films: [
     {
       id: "film-01",
-      title: "Quiet Geometry",
-      year: "2025",
-      role: "Direction / Cinematography",
-      duration: "04:12",
-      summary:
-        "An observational visual study of architectural massing and late afternoon light.",
+      title: "Film 1",
       youtubeId: "L_LUpnjgPso",
       thumbnail: "/images/films/quiet-geometry.jpg",
-      aspect: "2.39:1",
     },
     {
       id: "film-02",
-      title: "Machinery in Silence",
-      year: "2024",
-      role: "Edit & Sound",
-      duration: "06:45",
-      summary:
-        "Short documentary piece documenting an artisan bookbinding studio in Kyoto.",
+      title: "Film 2",
       youtubeId: "jNQXAC9IVRw",
       thumbnail: "/images/films/machinery-in-silence.jpg",
-      aspect: "16:9",
     },
     {
       id: "film-03",
-      title: "Night Drift, Amaravati",
-      year: "2025",
-      role: "Cinematography & Grade",
-      duration: "03:20",
-      summary:
-        "A slow-tempo night drive exploring unpaved capital perimeter highways.",
+      title: "Film 3",
       youtubeId: "dQw4w9WgXcQ",
       thumbnail: "/images/films/night-drift.jpg",
-      aspect: "2.39:1",
     },
     {
       id: "film-04",
-      title: "The Shinjuku Crossline",
-      year: "2024",
-      role: "Direction & Edit",
-      duration: "05:10",
-      summary:
-        "A fast-paced rhythmic assembly of commuter transitions at rush hour.",
+      title: "Film 4",
       youtubeId: "kJQP7kiw5Fk",
       thumbnail: "/images/films/shinjuku.jpg",
-      aspect: "16:9",
     },
   ],
 };

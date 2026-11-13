@@ -28,8 +28,8 @@ export function TerminalOverlay() {
     {
       command: "welcome",
       output: [
-        "Kartheek Portfolio Shell v1.0.0 (x86_64-pc-none)",
-        "Type 'help' to inspect available system commands.",
+        "Kartheek Terminal Shell",
+        "Type 'help' to inspect available commands.",
       ],
     },
   ]);
@@ -141,7 +141,7 @@ export function TerminalOverlay() {
           "Available commands:",
           "  projects    List engineering works & case studies",
           "  skills      Enumerate technical capabilities",
-          "  film        Display motion reels in index",
+          "  film        Display motion reels",
           "  hire        Open direct mailto dispatch",
           "  clear       Wipe terminal output history",
           "  exit        Close terminal overlay",
@@ -150,7 +150,7 @@ export function TerminalOverlay() {
 
       case "projects":
         output = content.projects.map(
-          (p) => `${p.numeral} // ${p.title} (${p.status}) — ${p.category}`
+          (p) => `${p.numeral} · ${p.title}${p.status ? ` (${p.status})` : ""} — ${p.category}`
         );
         break;
 
@@ -162,13 +162,13 @@ export function TerminalOverlay() {
 
       case "film":
         output = content.films.map(
-          (f) => `${f.title} (${f.year}) — [${f.duration}] ${f.role}`
+          (f) => `${f.title}`
         );
         break;
 
       case "hire":
-        window.location.href = "mailto:hello@kartheek.dev";
-        output = "Opening mail client: mailto:hello@kartheek.dev ...";
+        window.location.href = `mailto:${content.email}`;
+        output = `Opening mail client: mailto:${content.email} ...`;
         break;
 
       default:
@@ -191,39 +191,40 @@ export function TerminalOverlay() {
     <div
       role="dialog"
       aria-label="Developer Terminal Overlay"
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-none flex items-end sm:items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 bg-ink/60 flex items-end sm:items-center justify-center p-4 sm:p-6"
       onClick={() => setIsOpen(false)}
     >
       <div
-        className="w-full max-w-2xl border border-line bg-surface text-text font-mono text-xs shadow-2xl flex flex-col max-h-[70vh] sm:max-h-[60vh] overflow-hidden"
+        className="w-full max-w-2xl border border-line bg-ink text-cream font-sans text-xs shadow-2xl flex flex-col max-h-[70vh] sm:max-h-[60vh] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Terminal Header Bar */}
-        <div className="flex items-center justify-between border-b border-line px-4 py-2.5 bg-bg select-none">
+        <div className="flex items-center justify-between border-b border-line px-4 py-2.5 bg-ink select-none">
           <div className="flex items-center gap-2 text-muted">
-            <span className="w-2 h-2 rounded-full bg-accent" />
-            <span className="text-[11px] uppercase tracking-wider text-text">
-              kartheek@terminal: ~ (ESC to exit)
+            <span className="w-2 h-2 rounded-full bg-tangerine" />
+            <span className="text-[11px] uppercase tracking-wider text-cream font-medium">
+              kartheek@terminal (ESC to exit)
             </span>
           </div>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="text-muted hover:text-accent transition-colors cursor-pointer text-xs uppercase"
+            className="text-muted hover:text-tangerine transition-colors cursor-pointer text-sm font-bold"
+            aria-label="Close terminal"
           >
-            [ × ]
+            ×
           </button>
         </div>
 
         {/* Terminal Scrollable Logs */}
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 font-mono text-xs">
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 font-sans text-xs">
           {history.map((entry, idx) => (
             <div key={idx} className="flex flex-col gap-1">
               <div className="flex items-center gap-2 text-muted">
-                <span className="text-accent">➜</span>
-                <span className="text-text font-medium">{entry.command}</span>
+                <span className="text-tangerine">➜</span>
+                <span className="text-cream font-medium">{entry.command}</span>
               </div>
-              <div className="text-muted/90 pl-4 whitespace-pre-wrap leading-relaxed">
+              <div className="text-cream/80 pl-4 whitespace-pre-wrap leading-relaxed">
                 {Array.isArray(entry.output) ? (
                   entry.output.map((line, lIdx) => (
                     <div key={lIdx}>{line}</div>
@@ -240,9 +241,9 @@ export function TerminalOverlay() {
         {/* Terminal Input Prompt */}
         <form
           onSubmit={handleSubmit}
-          className="border-t border-line px-4 py-2.5 flex items-center gap-2 bg-bg"
+          className="border-t border-line px-4 py-2.5 flex items-center gap-2 bg-ink"
         >
-          <span className="text-accent font-bold">➜</span>
+          <span className="text-tangerine font-bold">➜</span>
           <span className="text-muted text-[11px] hidden sm:inline">
             kartheek:~$
           </span>
@@ -252,7 +253,7 @@ export function TerminalOverlay() {
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
             placeholder="type 'help', 'projects', 'hire'..."
-            className="flex-1 bg-transparent border-0 outline-none text-text font-mono text-xs placeholder:text-muted/40"
+            className="flex-1 bg-transparent border-0 outline-none text-cream font-sans text-xs placeholder:text-muted/40"
           />
         </form>
       </div>

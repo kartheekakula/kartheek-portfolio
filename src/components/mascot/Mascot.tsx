@@ -189,16 +189,15 @@ export function Mascot() {
         }}
       >
         <svg
-          width="80"
-          height="96"
           viewBox="0 0 100 120"
           onPointerDown={handlePointerDown}
-          className={`pointer-events-auto transition-transform duration-200 ${
+          className={`w-14 h-16 sm:w-20 sm:h-24 pointer-events-auto transition-transform duration-200 ${
             isDragging ? "cursor-grabbing" : "cursor-grab"
           }`}
           style={{
             transform: `rotate(${rotation}deg)`,
             transformOrigin: "50px 80px",
+            touchAction: "none",
           }}
         >
           {/* Squash and bounce container */}

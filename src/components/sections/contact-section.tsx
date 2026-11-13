@@ -14,7 +14,7 @@ export function ContactSection() {
   const endCreditsRef = useRef<HTMLDivElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
 
-  const email = "hello@kartheek.dev";
+  const email = content.email;
 
   const handleCopyEmail = async () => {
     try {
@@ -55,26 +55,28 @@ export function ContactSection() {
     return () => ctx.revert();
   }, []);
 
+  // Filter out any social link with TODO
+  const activeSocials = content.socials.filter(
+    (s) => s.href && s.href !== "TODO" && !s.href.includes("TODO")
+  );
+
   return (
     <footer
       id="contact"
       ref={sectionRef}
-      className="flex flex-col gap-16 md:gap-24 scroll-mt-28 border-t border-line pt-16 md:pt-24 pb-20"
+      className="flex flex-col gap-16 md:gap-24 scroll-mt-28 border-t border-line pt-12 md:pt-16 pb-20"
     >
-      {/* Chapter Label */}
-      <div className="flex items-baseline justify-between border-b border-line pb-4">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted">
-          05 // NEXT
-        </span>
-        <span className="font-mono text-xs uppercase tracking-widest text-muted">
-          Inquiries & Collaboration
-        </span>
+      {/* Plain Section Heading */}
+      <div className="border-b border-line pb-4">
+        <h2 className="text-xs uppercase tracking-widest text-muted font-sans font-medium">
+          Contact
+        </h2>
       </div>
 
-      {/* Huge Instrument Serif headline */}
+      {/* Headline Placeholder */}
       <div className="flex flex-col gap-8 max-w-4xl">
-        <h2 className="font-story text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-text font-normal leading-[1.08] tracking-tight">
-          &ldquo;Got a role, a project or a scene in mind? Let&apos;s make it.&rdquo;
+        <h2 className="font-serif italic text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-ink font-normal leading-[1.08] tracking-tight">
+          {content.contactLine}
         </h2>
       </div>
 
@@ -82,14 +84,14 @@ export function ContactSection() {
       <div className="flex flex-col sm:flex-row sm:items-center gap-6 pt-2">
         <a
           href={`mailto:${email}`}
-          className="group inline-flex items-center gap-3 font-display text-2xl sm:text-3xl md:text-4xl text-text hover:text-accent transition-colors"
+          className="group inline-flex items-center gap-3 font-serif text-2xl sm:text-3xl md:text-4xl text-ink hover:text-tangerine transition-colors break-all sm:break-normal"
         >
-          <span className="border-b border-line group-hover:border-accent transition-colors pb-1">
+          <span className="border-b border-line group-hover:border-tangerine transition-colors pb-1">
             {email}
           </span>
           <span
             aria-hidden="true"
-            className="text-muted group-hover:text-accent group-hover:rotate-45 transition-transform duration-300 ease-out"
+            className="text-muted group-hover:text-tangerine group-hover:rotate-45 transition-transform duration-300 ease-out"
           >
             ↗
           </span>
@@ -98,69 +100,65 @@ export function ContactSection() {
         <button
           type="button"
           onClick={handleCopyEmail}
-          className="font-mono text-xs uppercase tracking-widest border border-line px-4 py-2.5 text-muted hover:text-text hover:border-accent transition-colors self-start sm:self-auto cursor-pointer"
+          className="font-sans text-xs uppercase tracking-widest border border-line px-4 py-2.5 text-muted hover:text-ink hover:border-tangerine transition-colors self-start sm:self-auto cursor-pointer font-medium"
         >
           {copied ? (
-            <span className="text-accent font-medium">COPIED</span>
+            <span className="text-tangerine font-medium">COPIED</span>
           ) : (
             <span>Copy email</span>
           )}
         </button>
       </div>
 
-      {/* Social Links Row */}
-      <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-4 border-t border-line">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted mr-2">
-          Network:
-        </span>
-        {content.socials.map((social) => (
-          <a
-            key={social.platform}
-            href={social.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative py-1 font-mono text-xs uppercase tracking-wider text-muted hover:text-text transition-colors"
-          >
-            <span>{social.platform}</span>
-            <span className="text-muted/60 ml-1 group-hover:text-accent transition-colors">
-              ↗
-            </span>
-            <span
-              aria-hidden="true"
-              className="absolute bottom-0 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full"
-            />
-          </a>
-        ))}
-      </div>
+      {/* Social Links Row (links with TODO are filtered out) */}
+      {activeSocials.length > 0 && (
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-4 border-t border-line">
+          {activeSocials.map((social) => (
+            <a
+              key={social.platform}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative py-1 font-sans text-xs uppercase tracking-wider text-muted hover:text-ink transition-colors font-medium"
+            >
+              <span>{social.platform}</span>
+              <span className="text-muted/60 ml-1 group-hover:text-tangerine transition-colors">
+                ↗
+              </span>
+              <span
+                aria-hidden="true"
+                className="absolute bottom-0 left-0 h-[1px] w-0 bg-tangerine transition-all duration-300 ease-out group-hover:w-full"
+              />
+            </a>
+          ))}
+        </div>
+      )}
 
-      {/* Fade-to-black End Credits Roll */}
+      {/* End Credits */}
       <div
         ref={endCreditsRef}
         className="border-t border-line pt-12 flex flex-col items-center justify-center gap-6 text-center select-none"
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-muted/60">
-          [ End Credits Roll ]
-        </span>
-        <div className="flex flex-wrap justify-center gap-x-12 gap-y-3 font-mono text-xs text-muted">
+        <div className="flex flex-wrap justify-center gap-x-12 gap-y-3 font-sans text-xs text-muted">
           <div>
-            <span className="text-muted/50">WRITTEN BY // </span>
-            <span className="text-text">KARTHEEK</span>
+            <span className="text-muted/60">Written by </span>
+            <span className="text-ink font-medium">Kartheek</span>
           </div>
           <div>
-            <span className="text-muted/50">DIRECTED BY // </span>
-            <span className="text-text">KARTHEEK</span>
+            <span className="text-muted/60">Directed by </span>
+            <span className="text-ink font-medium">Kartheek</span>
           </div>
           <div>
-            <span className="text-muted/50">BUILT BY // </span>
-            <span className="text-text">KARTHEEK</span>
+            <span className="text-muted/60">Built by </span>
+            <span className="text-ink font-medium">Kartheek</span>
           </div>
         </div>
       </div>
 
       {/* Final Colophon & The End */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-line pt-6 text-muted font-mono text-[11px]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-line pt-6 text-muted font-sans text-xs">
         <span>© 2026 {content.name}. All rights reserved.</span>
-        <span className="text-accent uppercase tracking-widest font-medium">
+        <span className="text-tangerine uppercase tracking-widest font-medium">
           The End.
         </span>
       </div>

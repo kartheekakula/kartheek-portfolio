@@ -1,34 +1,61 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0D0D0B;
-  --surface: #161613;
-  --text: #ECE7DC;
-  --muted: #8A867C;
-  --line: #2A2925;
-  --accent: #E5482D;
+  --cream: #F4ECDD;
+  --ink: #15120E;
+  --tangerine: #EB5A1F;
+  --mango: #F3B33D;
+  --sky: #B9D3DE;
+  --muted: #6F675B;
+  --line: #D9CFBB;
 
-  color-scheme: dark;
+  /* Semantic defaults for root / light cream page */
+  --bg: var(--cream);
+  --text: var(--ink);
+  --accent: var(--tangerine);
+  --surface: #ECE3D2;
+
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-text: var(--text);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-tangerine: var(--tangerine);
+  --color-mango: var(--mango);
+  --color-sky: var(--sky);
   --color-muted: var(--muted);
   --color-line: var(--line);
-  --color-accent: var(--accent);
+  --color-accent: var(--tangerine);
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-surface: var(--surface);
 
-  --font-display: var(--font-bricolage), sans-serif;
-  --font-story: var(--font-instrument-serif), Georgia, serif;
-  --font-mono: var(--font-jetbrains-mono), monospace;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-story: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-space-grotesk), system-ui, sans-serif;
 }
 
-/* Dark theme enforcement */
+/* Light cream page base */
 html {
-  background-color: var(--bg);
-  color: var(--text);
-  color-scheme: dark;
+  background-color: var(--cream);
+  color: var(--ink);
+  color-scheme: light;
+  overflow-x: hidden;
+}
+
+/* Dark ink sections styling for Projects and Experience */
+.section-ink {
+  background-color: var(--ink) !important;
+  color: var(--cream) !important;
+  --bg: var(--ink);
+  --text: var(--cream);
+  --line: #2E2922;
+  --muted: #9E9689;
+  --surface: #1E1A15;
 }
 
 /* Konami Code Bone Invert Easter Egg */
@@ -38,25 +65,32 @@ html.bone-invert {
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: var(--font-display), sans-serif;
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Visible focus outline in accent color for accessibility */
+:focus-visible {
+  outline: 2px solid var(--tangerine);
+  outline-offset: 2px;
+}
+
 /* Accent selection */
 ::selection {
-  background-color: var(--accent);
-  color: var(--bg);
+  background-color: var(--tangerine);
+  color: #FFFFFF;
 }
 
 ::-moz-selection {
-  background-color: var(--accent);
-  color: var(--bg);
+  background-color: var(--tangerine);
+  color: #FFFFFF;
 }
 
 /* Subtle film grain overlay */

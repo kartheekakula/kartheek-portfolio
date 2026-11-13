@@ -29,9 +29,7 @@ export function SkillsSection() {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     const animate = () => {
-      // Natural base drift speed + inertial decay of scroll velocity
       const speed = 0.6 + Math.abs(scrollVelocity);
-      // Direction: moves steadily left, reverses if scrolling up fast
       const direction = scrollVelocity < -2 ? 1 : -1;
       currentX += direction * speed;
 
@@ -45,9 +43,7 @@ export function SkillsSection() {
         marqueeRef.current.style.transform = `translate3d(${currentX}px, 0, 0)`;
       }
 
-      // Smooth decay of scroll velocity
       scrollVelocity *= 0.92;
-
       rafId = requestAnimationFrame(animate);
     };
 
@@ -74,17 +70,14 @@ export function SkillsSection() {
 
   return (
     <section
-      id="craft"
-      className="flex flex-col gap-12 md:gap-16 scroll-mt-28 border-t border-line pt-16 md:pt-24 overflow-hidden"
+      id="skills"
+      className="flex flex-col gap-12 md:gap-16 scroll-mt-28 border-t border-line pt-12 md:pt-16 overflow-hidden"
     >
-      {/* Chapter Label */}
-      <div className="flex items-baseline justify-between border-b border-line pb-4">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted">
-          03 // THE CRAFT
-        </span>
-        <span className="font-mono text-xs uppercase tracking-widest text-muted">
-          Disciplines & Capabilities
-        </span>
+      {/* Plain Section Heading */}
+      <div className="border-b border-line pb-4">
+        <h2 className="text-xs uppercase tracking-widest text-muted font-sans font-medium">
+          Skills
+        </h2>
       </div>
 
       {/* Outlined Huge Marquee Strip */}
@@ -97,7 +90,7 @@ export function SkillsSection() {
           className="will-change-transform inline-block whitespace-nowrap"
         >
           <span
-            className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tighter"
+            className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tighter"
             style={{
               WebkitTextStroke: "1px var(--line)",
               color: "transparent",
@@ -112,13 +105,13 @@ export function SkillsSection() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 md:gap-12 pt-4">
         {skills.map((group) => (
           <div key={group.category} className="flex flex-col gap-5">
-            <span className="font-mono text-xs uppercase tracking-widest text-muted border-b border-line pb-2">
-              // {group.category}
+            <span className="font-sans text-xs uppercase tracking-widest text-muted border-b border-line pb-2 font-medium">
+              {group.category}
             </span>
-            <ul className="flex flex-col gap-3 font-mono text-xs sm:text-sm text-text/80">
+            <ul className="flex flex-col gap-3 font-sans text-xs sm:text-sm text-ink/80">
               {group.items.map((item) => (
                 <li key={item}>
-                  <span className="relative inline-block cursor-default text-text/90 hover:text-text transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[1px] after:bg-accent after:transition-all after:duration-200">
+                  <span className="relative inline-block cursor-default text-ink/90 hover:text-ink transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[1px] after:bg-tangerine after:transition-all after:duration-200">
                     {item}
                   </span>
                 </li>
@@ -133,19 +126,14 @@ export function SkillsSection() {
         <a
           href="#experience"
           onClick={handleScrollToExperience}
-          className="font-mono text-xs uppercase tracking-widest text-muted hover:text-accent transition-colors inline-flex items-center gap-2 group py-2"
+          className="font-sans text-xs uppercase tracking-widest text-muted hover:text-tangerine transition-colors inline-flex items-center gap-2 group py-2 font-medium"
         >
           <span>See the road so far</span>
           <span className="group-hover:translate-y-1 transition-transform duration-200">
             ↓
           </span>
         </a>
-
-        <span className="font-mono text-[11px] uppercase tracking-wider text-muted/60 hidden sm:inline">
-          Chronology & Trajectory
-        </span>
       </div>
     </section>
   );
 }
-

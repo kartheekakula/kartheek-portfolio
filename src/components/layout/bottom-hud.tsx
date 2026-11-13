@@ -64,37 +64,28 @@ export function BottomHud() {
   return (
     <aside
       aria-label="Viewport status HUD"
-      className="fixed bottom-5 left-6 sm:left-12 md:px-0 lg:left-32 z-40 pointer-events-none flex items-center gap-3 font-mono text-[11px] tracking-wider uppercase text-text mix-blend-difference select-none"
+      className="fixed bottom-5 left-6 sm:left-12 md:px-0 lg:left-32 z-40 pointer-events-none flex items-center gap-4 font-sans text-xs tracking-wider uppercase text-white mix-blend-difference select-none"
     >
       {/* Blinking REC dot */}
       <div className="flex items-center gap-1.5">
         <span
           aria-hidden="true"
-          className="w-2 h-2 rounded-full bg-accent animate-pulse"
+          className="w-2 h-2 rounded-full bg-tangerine animate-pulse"
         />
-        <span className="text-text font-medium">REC</span>
+        <span className="text-white font-medium">REC</span>
       </div>
 
-      {/* Timecode (hidden on mobile) */}
-      <span aria-hidden="true" className="text-muted/60 hidden sm:inline">
-        //
-      </span>
-      <span className="tabular-nums text-text hidden sm:inline">
+      {/* Timecode (hidden on mobile) without slashes */}
+      <span className="tabular-nums text-white hidden sm:inline">
         {timecode}
       </span>
 
       {/* Live IST clock (hidden on mobile) */}
       {istTime && (
-        <>
-          <span aria-hidden="true" className="text-muted/60 hidden sm:inline">
-            //
-          </span>
-          <span className="tabular-nums text-muted hidden sm:inline">
-            {istTime} IST
-          </span>
-        </>
+        <span className="tabular-nums text-white/80 hidden sm:inline">
+          {istTime} IST
+        </span>
       )}
     </aside>
   );
 }
-

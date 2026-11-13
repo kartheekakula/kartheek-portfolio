@@ -37,7 +37,7 @@ export function MascotLimbs({
   const isSitting = mode === "sitting" || mode === "sleeping";
 
   return (
-    <g className="mascot-limbs" stroke="#ECE7DC" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" fill="none">
+    <g className="mascot-limbs" stroke="#15120E" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" fill="none">
       {/* ---------------- LEGS ---------------- */}
       {isSitting ? (
         // Folded sitting legs
@@ -102,13 +102,12 @@ export function MascotLimbs({
           <path d="M62 58 Q64 68 60 72" />
         </g>
       ) : (
-        // Default idle arms with slight natural swing
+        // Natural resting arms with subtle swing while walking
         <g>
-          <path d="M38 58 Q33 66 31 71" />
-          <path d="M62 58 Q67 66 69 71" />
+          <path d="M38 58 Q35 68 34 72" />
+          <path d="M62 58 Q65 68 66 72" />
         </g>
       )}
     </g>
   );
 }
-
