@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,132 +14,101 @@ if (typeof window !== "undefined") {
 export function ProjectsSection() {
   const router = useRouter();
   const sectionRef = useRef<HTMLElement | null>(null);
-  const rowsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const previewRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  const xTo = useRef<gsap.QuickToFunc | null>(null);
-  const yTo = useRef<gsap.QuickToFunc | null>(null);
+  const [activeNumber, setActiveNumber] = useState("01");
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const { projects } = content;
 
-  // Touch device detection
-  useEffect(() => {
-    setIsTouchDevice(
-      window.matchMedia("(pointer: coarse)").matches ||
-        "ontouchstart" in window ||
-        navigator.maxTouchPoints > 0
-    );
-  }, []);
-
-  // GSAP quickTo cursor follow setup
-  useEffect(() => {
-    if (isTouchDevice || !previewRef.current) return;
-
-    gsap.set(previewRef.current, {
-      xPercent: 0,
-      yPercent: 0,
-      rotation: 2,
-      scale: 0.96,
-      autoAlpha: 0,
-    });
-
-    xTo.current = gsap.quickTo(previewRef.current, "x", {
-      duration: 0.35,
-      ease: "power3.out",
-    });
-    yTo.current = gsap.quickTo(previewRef.current, "y", {
-      duration: 0.35,
-      ease: "power3.out",
-    });
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (xTo.current && yTo.current) {
-        xTo.current(e.clientX + 24);
-        yTo.current(e.clientY - 110);
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [isTouchDevice]);
-
-  // Scroll reveal with clip-path
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (prefersReducedMotion) {
-      rowsRef.current.forEach((row) => {
-        if (row) {
-          row.style.clipPath = "none";
-          row.style.opacity = "1";
-          row.style.transform = "none";
-        }
-      });
-      return;
-    }
+    if (prefersReducedMotion || !sectionRef.current || !trackRef.current) return;
 
     const ctx = gsap.context(() => {
-      rowsRef.current.forEach((row) => {
-        if (!row) return;
+      const track = trackRef.current;
+      if (!track) return;
 
-        gsap.fromTo(
-          row,
-          {
-            clipPath: "inset(100% 0% 0% 0%)",
-            y: 35,
-            opacity: 0,
+      const getScrollAmount = () => {
+        return track.scrollWidth - track.clientWidth;
+      };
+
+      const tl = gsap.to(track, {
+        x: () => -getScrollAmount(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${Math.max(window.innerWidth * 1.2, getScrollAmount() * 1.5)}`,
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            setScrollProgress(self.progress);
+            const idx = Math.min(
+              projects.length - 1,
+              Math.floor(self.progress * projects.length + 0.3)
+            );
+            setActiveNumber(projects[idx]?.numeral || "01");
           },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            y: 0,
-            opacity: 1,
-            duration: 0.85,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: row,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
+        },
+      });
+
+      // Staggered title and text fades across project panels
+      panelsRef.current.forEach((panel) => {
+        if (!panel) return;
+        const title = panel.querySelector(".project-panel-title");
+        const body = panel.querySelector(".project-panel-body");
+
+        if (title) {
+          gsap.fromTo(
+            title,
+            { opacity: 0.3, x: 25 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.6,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: panel,
+                containerAnimation: tl,
+                start: "left 85%",
+                end: "left 35%",
+                scrub: true,
+              },
+            }
+          );
+        }
+
+        if (body) {
+          gsap.fromTo(
+            body,
+            { opacity: 0.2, y: 15 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: panel,
+                containerAnimation: tl,
+                start: "left 80%",
+                end: "left 40%",
+                scrub: true,
+              },
+            }
+          );
+        }
       });
     }, sectionRef);
 
     return () => ctx.revert();
   }, [projects]);
-
-  const handleMouseEnterRow = (project: Project) => {
-    setHoveredSlug(project.slug);
-    setActiveProject(project);
-
-    if (!isTouchDevice && previewRef.current) {
-      gsap.to(previewRef.current, {
-        autoAlpha: 1,
-        scale: 1,
-        duration: 0.25,
-        ease: "power2.out",
-      });
-    }
-  };
-
-  const handleMouseLeaveRow = () => {
-    setHoveredSlug(null);
-
-    if (!isTouchDevice && previewRef.current) {
-      gsap.to(previewRef.current, {
-        autoAlpha: 0,
-        scale: 0.96,
-        duration: 0.2,
-        ease: "power2.in",
-      });
-    }
-  };
 
   const handleRowClick = (slug: string) => {
     router.push(`/work/${slug}`);
@@ -149,149 +118,111 @@ export function ProjectsSection() {
     <section
       id="work"
       ref={sectionRef}
-      className="flex flex-col gap-12 md:gap-16 scroll-mt-28"
+      className="relative w-full h-screen bg-ink text-cream overflow-hidden flex flex-col justify-between select-none"
     >
-      {/* Plain Section Heading */}
-      <div className="flex items-baseline justify-between border-b border-line pb-4">
-        <h2 className="text-xs uppercase tracking-widest text-muted font-sans font-medium">
-          Projects
-        </h2>
-      </div>
+      {/* Subtle warm glow on right edge: radial of --tangerine at 25% fading into --mango at 10% */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 right-0 bottom-0 w-[45vw] pointer-events-none z-0 opacity-100 bg-[radial-gradient(ellipse_at_right,_rgba(235,90,31,0.25)_0%,_rgba(243,179,61,0.10)_45%,_transparent_75%)]"
+      />
 
-      {/* Floating Preview Image for desktop (GSAP quickTo) */}
-      {!isTouchDevice && (
-        <div
-          ref={previewRef}
-          aria-hidden="true"
-          className="fixed top-0 left-0 pointer-events-none z-50 w-72 h-44 border border-line bg-surface overflow-hidden shadow-2xl hidden md:block"
-        >
-          {activeProject && (
-            <div className="relative w-full h-full">
-              <Image
-                src={activeProject.previewImage}
-                alt={activeProject.title}
-                fill
-                sizes="288px"
-                className="object-cover grayscale contrast-125 opacity-95"
-              />
-              <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between font-sans text-[11px] uppercase tracking-wider text-cream bg-ink/90 px-2 py-1 border border-line">
-                <span>{activeProject.numeral} · {activeProject.title}</span>
-                {activeProject.status && (
-                  <span className="text-tangerine">{activeProject.status}</span>
-                )}
-              </div>
-            </div>
-          )}
+      {/* Main Content Arena: Pinned Left Title + Horizontal Sliding Right Panels */}
+      <div className="relative z-10 flex-1 flex flex-col lg:flex-row w-full h-full pt-20 pb-16">
+        {/* Left Side (Fixed while pinned): "Projects" in huge Playfair + short line + SCROLL label */}
+        <div className="w-full lg:w-[32vw] flex-shrink-0 flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:pl-20 lg:pr-8 border-b lg:border-b-0 lg:border-r border-line/40 py-6 lg:py-0">
+          <h2 className="font-serif font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-cream tracking-tight leading-none">
+            Projects
+          </h2>
+          <div className="mt-6 flex flex-col gap-2">
+            <div className="w-12 h-[1px] bg-cream/40" />
+            <span className="font-sans text-xs tracking-[0.25em] text-muted uppercase font-medium">
+              SCROLL
+            </span>
+          </div>
         </div>
-      )}
 
-      {/* Numbered Editorial Rows */}
-      <div className="divide-y divide-line border-y border-line">
-        {projects.map((project, idx) => {
-          const isDimmed = hoveredSlug !== null && hoveredSlug !== project.slug;
-
-          return (
-            <div
-              key={project.id}
-              ref={(el) => {
-                rowsRef.current[idx] = el;
-              }}
-              onClick={() => handleRowClick(project.slug)}
-              onMouseEnter={() => handleMouseEnterRow(project)}
-              onMouseLeave={handleMouseLeaveRow}
-              className={`group cursor-pointer py-10 md:py-14 grid grid-cols-1 md:grid-cols-12 gap-8 items-start transition-opacity duration-300 ${
-                isDimmed ? "opacity-40" : "opacity-100"
-              }`}
-            >
-              {/* Left: Big numeral */}
-              <div className="md:col-span-2">
-                <span className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal text-cream/90 tracking-tight leading-none group-hover:text-tangerine transition-colors">
-                  {project.numeral}
-                </span>
-              </div>
-
-              {/* Middle: Category, Title, Description, Tags */}
-              <div className="md:col-span-7 flex flex-col gap-4">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-sans text-[11px] uppercase tracking-widest text-muted">
-                    {project.category}
+        {/* Right Side: Horizontal sliding panels */}
+        <div className="flex-1 overflow-hidden flex items-center relative">
+          <div
+            ref={trackRef}
+            className="flex items-center gap-12 sm:gap-16 lg:gap-24 pl-8 sm:pl-16 lg:pl-20 pr-32 will-change-transform h-full"
+          >
+            {projects.map((project, idx) => (
+              <div
+                key={project.id}
+                ref={(el) => {
+                  panelsRef.current[idx] = el;
+                }}
+                onClick={() => handleRowClick(project.slug)}
+                className="group cursor-pointer w-[80vw] sm:w-[60vw] md:w-[48vw] lg:w-[42vw] max-w-xl flex-shrink-0 flex flex-col justify-center gap-6 p-6 sm:p-8 rounded-none border border-line/30 bg-ink/40 backdrop-blur-sm transition-all duration-300 hover:border-line/70"
+              >
+                {/* Meta Line: Number and Category in muted text (e.g. "01  Embedded, Computer Vision") */}
+                <div className="flex items-baseline justify-between font-sans text-xs text-muted uppercase tracking-wider">
+                  <span>
+                    {project.numeral} &nbsp; {project.category}
                   </span>
-                  {project.badge && (
-                    <span className="font-sans text-[10px] uppercase tracking-wider text-tangerine border border-tangerine/40 px-1.5 py-0.5">
-                      {project.badge}
+                  {project.status && (
+                    <span className="text-tangerine text-[11px] font-medium tracking-widest border border-tangerine/40 px-2 py-0.5">
+                      {project.status}
                     </span>
                   )}
                 </div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl text-cream font-normal tracking-tight group-hover:text-tangerine transition-colors">
+                {/* Project Title in large Playfair Display with slight shift on hover */}
+                <h3 className="project-panel-title font-serif text-3xl sm:text-4xl md:text-5xl text-cream font-normal tracking-tight transition-transform duration-300 ease-out group-hover:translate-x-1.5">
                   {project.title}
                 </h3>
 
-                <p className="text-muted text-sm sm:text-base font-normal leading-relaxed max-w-2xl font-sans">
+                {/* Description: at most two short sentences */}
+                <p className="project-panel-body font-sans text-muted text-sm sm:text-base leading-relaxed">
                   {project.description}
                 </p>
 
-                {/* Tech tags separated by middle dot */}
+                {/* Tag Chips (thin 1px border, small uppercase Space Grotesk, no fill) */}
                 {project.tags.length > 0 && (
-                  <div className="font-sans text-xs text-muted/80 tracking-wider pt-1">
-                    {project.tags.join(" · ")}
+                  <div className="flex flex-wrap items-center gap-2 pt-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="font-sans text-[10px] uppercase tracking-wider text-muted/90 border border-line/50 px-2.5 py-1"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 )}
-              </div>
 
-              {/* Right: Status & Links */}
-              <div className="md:col-span-3 flex flex-col sm:items-end justify-between self-stretch gap-6 pt-1">
-                {/* Status indicator if present */}
-                {project.status ? (
-                  <div className="flex items-center gap-2 font-sans text-xs uppercase tracking-wider">
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        project.status === "Live"
-                          ? "bg-tangerine"
-                          : "bg-muted animate-pulse"
-                      }`}
-                    />
-                    <span className="text-cream">{project.status}</span>
-                  </div>
-                ) : (
-                  <div />
-                )}
-
-                {/* Case study cue & External Links */}
-                <div className="flex flex-col sm:items-end gap-2.5 font-sans text-xs uppercase tracking-wider">
-                  <span className="text-cream group-hover:text-tangerine transition-colors flex items-center gap-1 font-medium">
-                    Read Case Study <span>→</span>
-                  </span>
-
-                  <div className="flex items-center gap-4 text-muted pt-1">
-                    {project.liveUrl && project.liveUrl !== "TODO" && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="hover:text-cream transition-colors flex items-center gap-1"
-                      >
-                        View live <span>↗</span>
-                      </a>
-                    )}
-                    {project.githubUrl && project.githubUrl !== "TODO" && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="hover:text-cream transition-colors flex items-center gap-1"
-                      >
-                        GitHub <span>↗</span>
-                      </a>
-                    )}
-                  </div>
+                {/* View Case Study Outlined Button: fills with tangerine on hover */}
+                <div className="pt-4">
+                  <Link
+                    href={`/work/${project.slug}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-wider text-cream border border-line/60 px-5 py-2.5 transition-all duration-300 ease-out hover:bg-tangerine hover:border-tangerine hover:text-white font-medium"
+                  >
+                    <span>View case study</span>
+                    <span>→</span>
+                  </Link>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Progress Bar: thin line with active indicator and current numeral 01 or 02 on right */}
+      <div className="relative z-10 w-full px-8 sm:px-12 md:px-16 lg:px-20 pb-6 flex items-center justify-between gap-6 font-sans text-xs">
+        {/* Progress track */}
+        <div className="flex-1 h-[1px] bg-line/40 relative overflow-hidden">
+          <div
+            className="absolute top-0 left-0 bottom-0 bg-tangerine transition-all duration-100 ease-out"
+            style={{ width: `${Math.max(5, scrollProgress * 100)}%` }}
+          />
+        </div>
+
+        {/* Current numeral (01 or 02, no slashes) */}
+        <div className="font-sans text-xs uppercase tracking-widest text-muted tabular-nums pl-4 font-medium">
+          {activeNumber}
+        </div>
       </div>
     </section>
   );

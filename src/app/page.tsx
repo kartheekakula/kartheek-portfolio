@@ -17,12 +17,10 @@ export default function Home() {
         <AboutSection />
       </div>
 
-      {/* Dark Ink: Projects */}
-      <section className="section-ink w-full py-20 md:py-28">
-        <div className="w-full max-w-6xl mx-auto px-6 sm:px-12 md:px-20 lg:px-32">
-          <ProjectsSection />
-        </div>
-      </section>
+      {/* Dark Ink: Projects (Pinned Full Viewport Scroller) */}
+      <div className="section-ink w-full">
+        <ProjectsSection />
+      </div>
 
       {/* Light Cream: Skills */}
       <div className="w-full max-w-6xl mx-auto px-6 py-20 md:py-28 sm:px-12 md:px-20 lg:px-32">

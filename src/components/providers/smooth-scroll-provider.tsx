@@ -2,6 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface SmoothScrollProviderProps {
   children: React.ReactNode;
@@ -30,17 +36,19 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     lenisRef.current = lenis;
 
-    let rafId: number;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
+    // Connect Lenis to ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const updateTicker = (time: number) => {
+      lenis.raf(time * 1000);
     };
 
-    rafId = requestAnimationFrame(raf);
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
 
     const handleMediaChange = (event: MediaQueryListEvent) => {
       if (event.matches) {
-        cancelAnimationFrame(rafId);
+        gsap.ticker.remove(updateTicker);
         lenis.destroy();
         lenisRef.current = null;
       }
@@ -50,7 +58,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     return () => {
       mediaQuery.removeEventListener("change", handleMediaChange);
-      cancelAnimationFrame(rafId);
+      gsap.ticker.remove(updateTicker);
       lenis.destroy();
       lenisRef.current = null;
     };
@@ -58,4 +66,3 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
   return <>{children}</>;
 }
-

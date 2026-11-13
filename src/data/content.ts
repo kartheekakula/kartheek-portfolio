@@ -1,24 +1,10 @@
 export interface ProjectCaseStudy {
-  role?: string;
-  year?: string;
-  stack?: string;
-  status?: string;
-  problem?: {
-    summary: string;
-    details: string[];
-    image?: string;
-  };
-  approach?: {
-    summary: string;
-    details: string[];
-    image?: string;
-  };
-  result?: {
-    summary: string;
-    details: string[];
-    videoEmbed?: string;
-    image?: string;
-  };
+  role: string;
+  year: string;
+  status: string;
+  summary: string;
+  what: string;
+  how: string;
 }
 
 export interface Project {
@@ -30,13 +16,10 @@ export interface Project {
   badge?: string;
   status?: string;
   year: string;
-  role?: string;
   description: string;
   tags: string[];
-  liveUrl?: string;
-  githubUrl?: string;
   previewImage: string;
-  caseStudy?: ProjectCaseStudy;
+  caseStudy: ProjectCaseStudy;
 }
 
 export interface SkillCategory {
@@ -125,43 +108,20 @@ export const content: PortfolioContent = {
       numeral: "01",
       slug: "edge-ocr",
       title: "Edge-OCR Bus Route Identifier",
-      category: "Embedded · Computer Vision · Accessibility",
+      category: "Embedded, Computer Vision, Accessibility",
       year: "2025",
       description:
-        "A low-cost wearable built on a Raspberry Pi Zero 2 W that reads bus route numbers using on-device OCR and announces them through audio and tactile feedback for visually impaired commuters.",
-      tags: ["Raspberry Pi", "Python", "OCR", "Edge AI", "Accessibility"],
+        "A low-cost wearable that reads bus route numbers and announces them through audio and touch for visually impaired commuters.",
+      tags: ["Raspberry Pi", "Python", "OCR", "Edge AI"],
       previewImage: "/images/projects/edge-ocr.jpg",
       caseStudy: {
         role: "Hardware & Edge ML Lead",
         year: "2025",
-        stack: "Raspberry Pi Zero 2 W, Python, OpenCV, Tesseract",
         status: "Prototype Tested",
-        problem: {
-          summary:
-            "Visually impaired commuters in rapid transit terminals struggle to discern approaching municipal bus routes without sighted assistance.",
-          details: [
-            "Transit marquee LED signs suffer from rapid flicker, harsh sunlight reflection, and variable approach velocities.",
-            "Smartphone apps require users to hold up a phone while navigating with a white cane, introducing physical vulnerability.",
-            "Cloud-dependent vision APIs impose high latency and fail in subterranean or congested cellular zones.",
-          ],
-        },
-        approach: {
-          summary:
-            "Designed a hands-free chest rig that processes optical frames entirely on-chip in real time.",
-          details: [
-            "Mounted a wide-angle camera module and Raspberry Pi Zero 2 W in a compact enclosure.",
-            "Constructed a dual-stage vision pipeline with adaptive thresholding feeding quantized OCR.",
-            "Implemented immediate voice synthesis paired with a haptic pulse confirming recognition.",
-          ],
-        },
-        result: {
-          summary:
-            "Validated field accuracy under diverse illumination with zero cellular connection.",
-          details: [
-            "Delivers continuous operation on a lightweight lithium cell.",
-            "Demonstrated noticeable reduction in passenger transit hesitation during field trials.",
-          ],
-        },
+        summary:
+          "A low-cost wearable that reads bus route numbers and announces them through audio and touch for visually impaired commuters.",
+        what: "A wearable device mounted with a camera and Raspberry Pi Zero 2 W that recognizes municipal bus route numbers in real time, communicating approaching transit info without requiring smartphones or network connectivity.",
+        how: "An adaptive on-device vision pipeline runs optical character recognition directly on-chip, triggering high-contrast voice feedback paired with haptic vibration pulses confirming route detection.",
       },
     },
     {
@@ -169,40 +129,19 @@ export const content: PortfolioContent = {
       numeral: "02",
       slug: "arkee",
       title: "Arkee",
-      category: "Founder Project, Filmmaking",
-      badge: "Founder project",
+      category: "Founder Project",
       status: "In progress",
       year: "2026",
-      description:
-        "Instagram buries filmmakers, so I built Arkee: one place to share short films, get discovered through a portfolio profile, and collaborate by craft (direction, writing, cinematography, editing).",
-      tags: ["Filmmaking", "Community", "Product"],
+      description: "[DESCRIPTION]",
+      tags: [],
       previewImage: "/images/projects/arkee.jpg",
       caseStudy: {
         role: "Founder",
         year: "2026",
         status: "In progress",
-        problem: {
-          summary:
-            "Instagram buries filmmakers, so I built Arkee: one place to share short films, get discovered through a portfolio profile, and collaborate by craft (direction, writing, cinematography, editing).",
-          details: [
-            "Traditional social feeds prioritize algorithmic churn over cinematic portfolios.",
-            "Filmmakers struggle to find collaborators matched by specific crafts.",
-          ],
-        },
-        approach: {
-          summary:
-            "Building a dedicated home for short films structured around individual crafts and portfolio profiles.",
-          details: [
-            "Craft-based profiles highlighting direction, writing, cinematography, and editing.",
-            "Distraction-free film viewing focused on creative craft.",
-          ],
-        },
-        result: {
-          summary: "Currently in progress and being tested with filmmakers.",
-          details: [
-            "Validating portfolio and discovery workflows with early creators.",
-          ],
-        },
+        summary: "[DESCRIPTION]",
+        what: "[DESCRIPTION]",
+        how: "Currently developing the core platform architecture and validating the workflow directly with filmmakers.",
       },
     },
   ],
