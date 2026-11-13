@@ -68,21 +68,21 @@ export function AboutSection() {
         >
           <p
             ref={textRef}
-            className="font-serif italic text-2xl sm:text-3xl md:text-4xl lg:text-[40px] text-ink font-normal leading-[1.25] tracking-tight will-change-[transform,opacity]"
+            className="font-serif italic text-2xl sm:text-3xl md:text-4xl lg:text-[36px] text-ink font-normal leading-[1.3] tracking-tight will-change-[transform,opacity]"
           >
             {content.aboutText}
           </p>
         </div>
 
-        {/* Right: Portrait Photo */}
+        {/* Right: About Photo (Full Color, center 30%) */}
         <div className="lg:col-span-5 flex flex-col gap-3">
           <div className="relative aspect-[3/4] w-full max-w-sm mx-auto lg:max-w-none border border-line bg-surface overflow-hidden">
             <Image
-              src="/images/potrait.jpeg"
-              alt="Portrait of Kartheek"
+              src="/images/about.jpg"
+              alt="Kartheek standing in front of a cafe sign at night"
               fill
               sizes="(max-width: 1024px) 100vw, 40vw"
-              className="object-cover grayscale contrast-125 opacity-90 transition-opacity hover:opacity-100"
+              className="object-cover object-[center_30%]"
               priority
             />
           </div>

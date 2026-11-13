@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { content } from "@/data/content";
 
 export const alt = "Kartheek";
 export const size = {
@@ -66,7 +67,7 @@ export default async function OGImage() {
           </h1>
           <p
             style={{
-              fontSize: "36px",
+              fontSize: "32px",
               fontStyle: "italic",
               color: "#6F675B",
               margin: 0,
@@ -74,7 +75,7 @@ export default async function OGImage() {
               lineHeight: 1.35,
             }}
           >
-            [HERO STATEMENT]
+            {content.heroStatement}
           </p>
         </div>
 

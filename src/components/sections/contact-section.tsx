@@ -73,10 +73,11 @@ export function ContactSection() {
         </h2>
       </div>
 
-      {/* Headline Placeholder */}
-      <div className="flex flex-col gap-8 max-w-4xl">
+      {/* Headline */}
+      <div className="flex flex-col gap-4 max-w-4xl">
         <h2 className="font-serif italic text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-ink font-normal leading-[1.08] tracking-tight">
-          {content.contactLine}
+          <span className="block">{content.contactLine.line1}</span>
+          <span className="block text-tangerine">{content.contactLine.line2}</span>
         </h2>
       </div>
 

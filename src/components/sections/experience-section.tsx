@@ -131,13 +131,25 @@ export function ExperienceSection() {
                 </div>
 
                 {/* Organization & Place */}
-                <div className="font-sans text-xs text-muted uppercase tracking-wider flex items-center gap-2">
+                <div className="font-sans text-xs text-muted uppercase tracking-wider flex flex-wrap items-center gap-2">
                   <span>{item.org}</span>
                   {item.place && (
                     <>
                       <span className="text-muted/40">·</span>
                       <span className="text-muted/80">{item.place}</span>
                     </>
+                  )}
+                  {item.tags && item.tags.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-1.5 sm:ml-2">
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="font-sans text-[10px] uppercase tracking-wider text-tangerine border border-tangerine/30 px-1.5 py-0.5"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   )}
                 </div>
 
@@ -189,11 +201,13 @@ export function ExperienceSection() {
       </div>
 
       {/* Closing Note */}
-      <div className="border-t border-line pt-10 md:pt-14 pb-2">
-        <p className="font-serif text-xl sm:text-2xl md:text-3xl text-muted font-normal italic leading-relaxed max-w-2xl">
-          {experienceClosingNote}
-        </p>
-      </div>
+      {experienceClosingNote && (
+        <div className="border-t border-line pt-10 md:pt-14 pb-2">
+          <p className="font-serif text-xl sm:text-2xl md:text-3xl text-muted font-normal italic leading-relaxed max-w-2xl">
+            {experienceClosingNote}
+          </p>
+        </div>
+      )}
     </section>
   );
 }

@@ -49,6 +49,7 @@ export interface Experience {
   org: string;
   place?: string;
   period: string;
+  tags?: string[];
   bullets: string[];
 }
 
@@ -92,8 +93,11 @@ export interface PortfolioContent {
   email: string;
   heroStatement: string;
   aboutText: string;
-  contactLine: string;
-  experienceClosingNote: string;
+  contactLine: {
+    line1: string;
+    line2: string;
+  };
+  experienceClosingNote?: string;
   projects: Project[];
   skills: SkillCategory[];
   experience: Experience[];
@@ -106,10 +110,14 @@ export interface PortfolioContent {
 export const content: PortfolioContent = {
   name: "Kartheek",
   email: "kartheekav29@gmail.com",
-  heroStatement: "[HERO STATEMENT]",
-  aboutText: "[ABOUT STATEMENT]",
-  contactLine: "[CONTACT STATEMENT]",
-  experienceClosingNote: "[CLOSING NOTE]",
+  heroStatement:
+    "I'm Kartheek Akula, a builder based in India. I come from the intersection of tech and creativity, bringing my creative vision and technical capabilities to the table.",
+  aboutText:
+    "I'm a CS undergrad with a strong focus on building fast, functional and genuinely useful products. I've interned at Alfaleus, led the entrepreneurship club, and done freelance video editing. I'm a curious mind with a weird fascination for building things better, turning rough sketches into clean working products.",
+  contactLine: {
+    line1: "Got a role, a product or a rough idea?",
+    line2: "Let's build something useful.",
+  },
 
   projects: [
     {
@@ -161,35 +169,38 @@ export const content: PortfolioContent = {
       numeral: "02",
       slug: "arkee",
       title: "Arkee",
-      category: "Founder project",
+      category: "Founder Project, Filmmaking",
       badge: "Founder project",
       status: "In progress",
       year: "2026",
-      description: "[DESCRIPTION]",
-      tags: [],
+      description:
+        "Instagram buries filmmakers, so I built Arkee: one place to share short films, get discovered through a portfolio profile, and collaborate by craft (direction, writing, cinematography, editing).",
+      tags: ["Filmmaking", "Community", "Product"],
       previewImage: "/images/projects/arkee.jpg",
       caseStudy: {
         role: "Founder",
         year: "2026",
         status: "In progress",
         problem: {
-          summary: "[DESCRIPTION]",
+          summary:
+            "Instagram buries filmmakers, so I built Arkee: one place to share short films, get discovered through a portfolio profile, and collaborate by craft (direction, writing, cinematography, editing).",
           details: [
-            "Problem validation in progress.",
-            "Iterating on core concept.",
+            "Traditional social feeds prioritize algorithmic churn over cinematic portfolios.",
+            "Filmmakers struggle to find collaborators matched by specific crafts.",
           ],
         },
         approach: {
-          summary: "Building and testing the initial implementation.",
+          summary:
+            "Building a dedicated home for short films structured around individual crafts and portfolio profiles.",
           details: [
-            "Developing foundational architecture.",
-            "Gathering early direct feedback.",
+            "Craft-based profiles highlighting direction, writing, cinematography, and editing.",
+            "Distraction-free film viewing focused on creative craft.",
           ],
         },
         result: {
-          summary: "Currently in testing.",
+          summary: "Currently in progress and being tested with filmmakers.",
           details: [
-            "Evaluating whether the solution works as intended.",
+            "Validating portfolio and discovery workflows with early creators.",
           ],
         },
       },
@@ -223,10 +234,10 @@ export const content: PortfolioContent = {
     {
       role: "Founder",
       org: "Arkee",
-      place: "Self-started",
-      period: "2026 – Present",
+      period: "2026",
+      tags: ["Startup", "Product", "Filmmaking"],
       bullets: [
-        "A startup I am building and testing. I do not know yet if it will work, but I built it.",
+        "Built a platform where filmmakers share short films, get discovered through a portfolio profile, and collaborate by craft.",
       ],
     },
     {
@@ -289,29 +300,24 @@ export const content: PortfolioContent = {
 
   socials: [
     {
+      platform: "GitHub",
+      label: "GitHub",
+      href: "https://github.com/kartheekakula",
+    },
+    {
       platform: "LinkedIn",
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/kartheek-akula-648082322",
     },
     {
+      platform: "Instagram",
+      label: "Instagram",
+      href: "https://www.instagram.com/kartheekakulaa",
+    },
+    {
       platform: "Email",
       label: "Email",
       href: "mailto:kartheekav29@gmail.com",
-    },
-    {
-      platform: "GitHub",
-      label: "GitHub",
-      href: "TODO",
-    },
-    {
-      platform: "Instagram",
-      label: "Instagram",
-      href: "TODO",
-    },
-    {
-      platform: "YouTube",
-      label: "YouTube",
-      href: "TODO",
     },
   ],
 

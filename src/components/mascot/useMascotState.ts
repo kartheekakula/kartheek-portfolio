@@ -24,10 +24,6 @@ const SPEECH_LINES = [
   "cut. one more take?",
   "hire him",
   "nice scroll",
-  "scene 04, take 1",
-  "quiet on set",
-  "1080p, 24fps",
-  "sharp focus",
 ];
 
 export function useMascotState() {
