@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,13 +10,15 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 export function LensSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const filmsSectionRef = useRef<HTMLElement | null>(null);
+  const pinnedWrapperRef = useRef<HTMLDivElement | null>(null);
+  const stripRef = useRef<HTMLDivElement | null>(null);
   const letterboxTopRef = useRef<HTMLDivElement | null>(null);
   const letterboxBottomRef = useRef<HTMLDivElement | null>(null);
-
-  const filmsContainerRef = useRef<HTMLDivElement | null>(null);
-  const filmsTrackRef = useRef<HTMLDivElement | null>(null);
 
   // Modals state
   const [activeFilm, setActiveFilm] = useState<Film | null>(null);
@@ -24,105 +26,103 @@ export function LensSection() {
 
   const { films, photos } = content;
 
-  // 1. Cinematic Letterbox Bars
-  useEffect(() => {
+  // 1. GSAP Layout Setup (useLayoutEffect with gsap.context)
+  useIsomorphicLayoutEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || !filmsSectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      if (
-        !letterboxTopRef.current ||
-        !letterboxBottomRef.current ||
-        !sectionRef.current
-      )
-        return;
+      const strip = stripRef.current;
+      const pinnedWrapper = pinnedWrapperRef.current;
+      if (!strip || !pinnedWrapper) return;
 
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top 60%",
-        end: "bottom 30%",
-        onEnter: () => {
-          gsap.to([letterboxTopRef.current, letterboxBottomRef.current], {
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-          });
-        },
-        onLeave: () => {
-          gsap.to(letterboxTopRef.current, {
-            y: "-100%",
-            duration: 0.4,
-            ease: "power2.in",
-          });
-          gsap.to(letterboxBottomRef.current, {
-            y: "100%",
-            duration: 0.4,
-            ease: "power2.in",
-          });
-        },
-        onEnterBack: () => {
-          gsap.to([letterboxTopRef.current, letterboxBottomRef.current], {
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-          });
-        },
-        onLeaveBack: () => {
-          gsap.to(letterboxTopRef.current, {
-            y: "-100%",
-            duration: 0.4,
-            ease: "power2.in",
-          });
-          gsap.to(letterboxBottomRef.current, {
-            y: "100%",
-            duration: 0.4,
-            ease: "power2.in",
-          });
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  // 2. Horizontally scrolling pinned film strip
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      if (!filmsContainerRef.current || !filmsTrackRef.current) return;
-
-      const track = filmsTrackRef.current;
-      const totalScrollWidth = track.scrollWidth - window.innerWidth + 120;
-
-      if (totalScrollWidth <= 0) return;
-
-      gsap.to(track, {
-        x: -totalScrollWidth,
+      // Pinned Films Horizontal Scroll Strip
+      gsap.to(strip, {
+        x: () => -(strip.scrollWidth - window.innerWidth + 80),
         ease: "none",
         scrollTrigger: {
-          trigger: filmsContainerRef.current,
-          start: "top 15%",
-          end: () => `+=${totalScrollWidth * 1.2}`,
+          trigger: pinnedWrapper,
+          start: "top top",
+          end: () => "+=" + (strip.scrollWidth - window.innerWidth),
           pin: true,
-          scrub: 1,
+          pinSpacing: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          scrub: 1,
         },
       });
-    }, sectionRef);
 
-    return () => ctx.revert();
+      // Letterbox Bars Trigger (Bars are scoped inside Films section)
+      if (letterboxTopRef.current && letterboxBottomRef.current) {
+        ScrollTrigger.create({
+          trigger: pinnedWrapper,
+          start: "top 20%",
+          end: "bottom 80%",
+          onEnter: () => {
+            gsap.to([letterboxTopRef.current, letterboxBottomRef.current], {
+              y: 0,
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          },
+          onLeave: () => {
+            gsap.to(letterboxTopRef.current, {
+              y: "-100%",
+              duration: 0.3,
+              ease: "power2.in",
+            });
+            gsap.to(letterboxBottomRef.current, {
+              y: "100%",
+              duration: 0.3,
+              ease: "power2.in",
+            });
+          },
+          onEnterBack: () => {
+            gsap.to([letterboxTopRef.current, letterboxBottomRef.current], {
+              y: 0,
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to(letterboxTopRef.current, {
+              y: "-100%",
+              duration: 0.3,
+              ease: "power2.in",
+            });
+            gsap.to(letterboxBottomRef.current, {
+              y: "100%",
+              duration: 0.3,
+              ease: "power2.in",
+            });
+          },
+        });
+      }
+    }, filmsSectionRef);
+
+    // Refresh after fonts load
+    if (typeof document !== "undefined" && document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        ScrollTrigger.refresh();
+      });
+    }
+
+    // Refresh after window complete load
+    const handleLoad = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener("load", handleLoad);
+
+    return () => {
+      window.removeEventListener("load", handleLoad);
+      ctx.revert();
+    };
   }, [films]);
 
-  // 3. Lightbox keyboard navigation & escape handling
+  // 2. Lightbox keyboard navigation & escape handling
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -153,144 +153,126 @@ export function LensSection() {
 
   return (
     <>
-      {/* Dynamic Cinematic Letterbox Bars */}
-      <div
-        ref={letterboxTopRef}
-        aria-hidden="true"
-        className="fixed top-0 left-0 right-0 h-4 md:h-6 bg-ink z-50 pointer-events-none -translate-y-full will-change-transform border-b border-line/40"
-      />
-      <div
-        ref={letterboxBottomRef}
-        aria-hidden="true"
-        className="fixed bottom-0 left-0 right-0 h-4 md:h-6 bg-ink z-50 pointer-events-none translate-y-full will-change-transform border-t border-line/40"
-      />
-
+      {/* ========================================================= */}
+      {/* 1. FILMS SECTION (Dark Ink Background, Pinned Strip)      */}
+      {/* ========================================================= */}
       <section
-        id="lens"
-        ref={sectionRef}
-        className="flex flex-col gap-20 md:gap-28 scroll-mt-28 border-t border-line pt-12 md:pt-16"
+        id="films"
+        ref={filmsSectionRef}
+        className="relative w-full bg-ink text-cream overflow-hidden"
       >
-        {/* Plain Section Heading */}
-        <div className="border-b border-line pb-4">
-          <h2 className="text-xs uppercase tracking-widest text-muted font-sans font-medium">
-            Lens
-          </h2>
-        </div>
+        {/* Letterbox bars scoped strictly inside Films section */}
+        <div
+          ref={letterboxTopRef}
+          aria-hidden="true"
+          className="absolute top-0 left-0 right-0 h-4 sm:h-6 bg-black z-30 pointer-events-none border-b border-cream/10 -translate-y-full will-change-transform"
+        />
+        <div
+          ref={letterboxBottomRef}
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 right-0 h-4 sm:h-6 bg-black z-30 pointer-events-none border-t border-cream/10 translate-y-full will-change-transform"
+        />
 
-        {/* ---------------- FILMS ---------------- */}
-        <div className="flex flex-col gap-8">
-          <div className="flex items-baseline justify-between border-b border-line pb-3">
-            <h3 className="font-sans text-xs uppercase tracking-widest text-ink font-medium">
+        {/* Pinned wrapper with non-absolute positioning */}
+        <div
+          ref={pinnedWrapperRef}
+          className="relative w-full min-h-screen flex flex-col justify-center py-16 px-6 sm:px-12 md:px-20 overflow-hidden"
+        >
+          {/* Simple Header */}
+          <div className="w-full max-w-7xl mx-auto mb-8 sm:mb-12">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-cream tracking-tight">
               Films
-            </h3>
-            <span className="font-sans text-xs text-muted">
-              {films.length.toString().padStart(2, "0")} Entries
-            </span>
+            </h2>
           </div>
 
-          <div
-            ref={filmsContainerRef}
-            className="w-full relative overflow-hidden py-4"
-          >
+          {/* Horizontal Strip */}
+          <div className="w-full overflow-visible">
             <div
-              ref={filmsTrackRef}
-              className="flex gap-8 items-start will-change-transform"
+              ref={stripRef}
+              className="flex gap-8 sm:gap-12 items-start will-change-transform"
             >
-              {films.map((film, idx) => (
+              {films.map((film) => (
                 <div
                   key={film.id}
                   onClick={() => setActiveFilm(film)}
-                  className="group cursor-pointer flex-shrink-0 w-[300px] sm:w-[440px] md:w-[540px] flex flex-col gap-3.5 select-none"
+                  className="group cursor-pointer flex-shrink-0 w-[280px] sm:w-[420px] md:w-[500px] flex flex-col gap-3 select-none"
                 >
                   {/* Thumbnail Frame */}
-                  <div className="relative aspect-[16/9] w-full border border-line bg-surface overflow-hidden">
+                  <div className="relative aspect-[16/9] w-full border border-cream/15 bg-black overflow-hidden rounded-xl">
                     <Image
                       src={film.thumbnail}
                       alt={film.title}
                       fill
                       loading="lazy"
-                      sizes="(max-width: 768px) 300px, 540px"
+                      onLoad={() => ScrollTrigger.refresh()}
+                      sizes="(max-width: 640px) 280px, (max-width: 1024px) 420px, 500px"
                       className="object-cover grayscale contrast-125 opacity-85 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"
                     />
 
-                    {/* Overlay cue */}
+                    {/* Play Cue Overlay */}
                     <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <span className="font-sans text-xs uppercase tracking-widest text-cream border border-line bg-ink/90 px-3 py-1.5 flex items-center gap-2">
-                        <span>Play Reel</span>
+                      <span className="font-sans text-xs uppercase tracking-widest text-cream border border-cream/30 bg-ink/90 px-4 py-2 rounded-full flex items-center gap-2">
+                        <span>Watch</span>
                         <span className="text-tangerine">▶</span>
                       </span>
                     </div>
                   </div>
 
-                  {/* Metadata */}
-                  <div className="flex items-baseline justify-between pt-1">
-                    <div className="flex items-center gap-3">
-                      <span className="font-sans text-xs text-muted">
-                        {(idx + 1).toString().padStart(2, "0")}
-                      </span>
-                      <h4 className="font-serif text-lg sm:text-xl text-ink font-normal group-hover:text-tangerine transition-colors">
-                        {film.title}
-                      </h4>
-                    </div>
-                  </div>
+                  {/* Title Only in Playfair Display */}
+                  <h3 className="font-serif text-lg sm:text-xl md:text-2xl text-cream font-medium group-hover:text-tangerine transition-colors">
+                    {film.title}
+                  </h3>
                 </div>
               ))}
             </div>
           </div>
         </div>
+      </section>
 
-        {/* ---------------- PHOTOGRAPHY ---------------- */}
-        <div className="flex flex-col gap-8">
-          <div className="flex items-baseline justify-between border-b border-line pb-3">
-            <h3 className="font-sans text-xs uppercase tracking-widest text-ink font-medium">
-              Photography
-            </h3>
-            <span className="font-sans text-xs text-muted">
-              {photos.length.toString().padStart(2, "0")} Frames
-            </span>
-          </div>
+      {/* ========================================================= */}
+      {/* 2. PHOTOGRAPHY SECTION (Cream Background, z-index 2, 20vh)*/}
+      {/* ========================================================= */}
+      <section
+        id="photography"
+        className="relative z-[2] mt-[20vh] w-full bg-cream text-ink py-20 md:py-28 px-6 sm:px-12 md:px-20 lg:px-32"
+      >
+        <div className="max-w-7xl mx-auto">
+          {/* Simple Header */}
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-ink tracking-tight mb-10 sm:mb-14">
+            Photography
+          </h2>
 
-          {/* Masonry-like grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+          {/* 3 Columns on Desktop, 1 Column on Mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-start">
             {photos.map((photo, idx) => (
-              <figure
+              <div
                 key={photo.id}
                 onClick={() => setActivePhotoIdx(idx)}
-                className="group cursor-pointer flex flex-col gap-2.5 border border-line p-3 bg-surface/30 transition-colors hover:border-tangerine"
+                className="group cursor-pointer relative overflow-hidden rounded-xl border border-line bg-surface/30 aspect-[4/5] shadow-sm hover:shadow-md transition-shadow"
               >
-                <div
-                  className={`relative ${photo.aspectClass} w-full overflow-hidden bg-surface`}
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.title}
-                    fill
-                    loading="lazy"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover grayscale contrast-125 transition-all duration-500 group-hover:grayscale-0 group-hover:contrast-100 group-hover:scale-105"
-                  />
-                  <div className="absolute top-2 right-2 font-sans text-[10px] uppercase tracking-wider text-muted bg-cream/90 border border-line px-1.5 py-0.5">
-                    {(idx + 1).toString().padStart(2, "0")}
-                  </div>
-                </div>
-
-                <figcaption className="flex flex-col gap-1 pt-1 font-sans text-[11px]">
-                  <div className="flex items-baseline justify-between text-ink">
-                    <span className="font-medium">{photo.title}</span>
-                  </div>
-                </figcaption>
-              </figure>
+                <Image
+                  src={photo.src}
+                  alt={photo.title}
+                  fill
+                  loading="lazy"
+                  onLoad={() => ScrollTrigger.refresh()}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover grayscale contrast-110 transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ---------------- FULLSCREEN FILM MODAL ---------------- */}
+      {/* ========================================================= */}
+      {/* FULLSCREEN FILM MODAL (youtube-nocookie)                   */}
+      {/* ========================================================= */}
       {activeFilm && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-ink/95 flex flex-col items-center justify-center p-4 sm:p-8 animate-fadeIn"
+          className="fixed inset-0 z-50 bg-ink/95 flex flex-col items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
           onClick={() => setActiveFilm(null)}
         >
           <div
@@ -298,8 +280,8 @@ export function LensSection() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal top bar */}
-            <div className="flex items-center justify-between font-sans text-xs text-muted border-b border-line pb-3">
-              <span className="uppercase tracking-widest text-cream">
+            <div className="flex items-center justify-between font-sans text-xs text-muted border-b border-cream/15 pb-3">
+              <span className="font-serif text-base text-cream">
                 {activeFilm.title}
               </span>
               <button
@@ -312,7 +294,7 @@ export function LensSection() {
             </div>
 
             {/* Responsive 16:9 Video Embed */}
-            <div className="relative aspect-[16/9] w-full border border-line bg-black">
+            <div className="relative aspect-[16/9] w-full border border-cream/20 rounded-xl overflow-hidden bg-black shadow-2xl">
               <iframe
                 src={`https://www.youtube-nocookie.com/embed/${activeFilm.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
                 title={activeFilm.title}
@@ -325,26 +307,28 @@ export function LensSection() {
         </div>
       )}
 
-      {/* ---------------- FULLSCREEN PHOTO LIGHTBOX ---------------- */}
+      {/* ========================================================= */}
+      {/* FULLSCREEN PHOTO LIGHTBOX WITH ARROWS                     */}
+      {/* ========================================================= */}
       {activePhoto && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-ink/95 flex flex-col justify-between p-6 sm:p-10 select-none animate-fadeIn"
+          className="fixed inset-0 z-50 bg-ink/95 flex flex-col justify-between p-6 sm:p-10 select-none animate-in fade-in duration-200"
           onClick={() => setActivePhotoIdx(null)}
         >
-          {/* Lightbox Header with Counter */}
+          {/* Top Bar */}
           <div
-            className="flex items-center justify-between font-sans text-xs text-muted border-b border-line pb-3 max-w-6xl w-full mx-auto"
+            className="flex items-center justify-between font-sans text-xs text-muted border-b border-cream/15 pb-3 max-w-6xl w-full mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="tracking-widest uppercase text-cream font-medium">
-              PHOTO {((activePhotoIdx ?? 0) + 1).toString().padStart(2, "0")} of {photos.length.toString().padStart(2, "0")}
+            <span className="font-serif text-sm tracking-wide text-cream">
+              {activePhoto.title}
             </span>
 
             <div className="flex items-center gap-6">
-              <span className="hidden sm:inline text-muted/60 text-[11px]">
-                Arrow keys to navigate
+              <span className="hidden sm:inline text-muted/70 text-[11px]">
+                Use ← / → keys to navigate
               </span>
               <button
                 type="button"
@@ -356,11 +340,26 @@ export function LensSection() {
             </div>
           </div>
 
-          {/* Central Image Container */}
+          {/* Central Image with Navigation Arrows */}
           <div
             className="relative flex-1 max-w-5xl w-full mx-auto my-6 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Left Arrow */}
+            <button
+              type="button"
+              onClick={() =>
+                setActivePhotoIdx((prev) =>
+                  prev !== null ? (prev - 1 + photos.length) % photos.length : 0
+                )
+              }
+              aria-label="Previous photo"
+              className="absolute left-2 sm:-left-12 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-ink/80 border border-cream/20 text-cream flex items-center justify-center hover:bg-tangerine hover:border-tangerine transition-colors cursor-pointer"
+            >
+              ‹
+            </button>
+
+            {/* Photo Container */}
             <div className="relative w-full h-full max-h-[75vh]">
               <Image
                 src={activePhoto.src}
@@ -371,14 +370,30 @@ export function LensSection() {
                 priority
               />
             </div>
+
+            {/* Right Arrow */}
+            <button
+              type="button"
+              onClick={() =>
+                setActivePhotoIdx((prev) =>
+                  prev !== null ? (prev + 1) % photos.length : 0
+                )
+              }
+              aria-label="Next photo"
+              className="absolute right-2 sm:-right-12 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-ink/80 border border-cream/20 text-cream flex items-center justify-center hover:bg-tangerine hover:border-tangerine transition-colors cursor-pointer"
+            >
+              ›
+            </button>
           </div>
 
-          {/* Lightbox Caption Footer */}
+          {/* Bottom Bar Counter */}
           <div
-            className="flex items-baseline justify-between font-sans text-xs text-muted border-t border-line pt-3 max-w-6xl w-full mx-auto"
+            className="flex items-center justify-center font-sans text-xs text-muted/80 max-w-6xl w-full mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="text-cream font-normal">{activePhoto.title}</span>
+            <span>
+              {(activePhotoIdx ?? 0) + 1} of {photos.length}
+            </span>
           </div>
         </div>
       )}
