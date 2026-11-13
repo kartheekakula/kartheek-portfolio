@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0D0D0B;
+  --surface: #161613;
+  --text: #ECE7DC;
+  --muted: #8A867C;
+  --line: #2A2925;
+  --accent: #E5482D;
+
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+
+  --font-display: var(--font-bricolage), sans-serif;
+  --font-story: var(--font-instrument-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark theme enforcement */
+html {
+  background-color: var(--bg);
+  color: var(--text);
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display), sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accent selection */
+::selection {
+  background-color: var(--accent);
+  color: var(--bg);
+}
+
+::-moz-selection {
+  background-color: var(--accent);
+  color: var(--bg);
+}
+
+/* Subtle film grain overlay */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Hairline border utilities */
+.border-hairline {
+  border: 1px solid var(--line);
+}
+
+.border-hairline-t {
+  border-top: 1px solid var(--line);
+}
+
+.border-hairline-b {
+  border-bottom: 1px solid var(--line);
+}
+
+.border-hairline-l {
+  border-left: 1px solid var(--line);
+}
+
+.border-hairline-r {
+  border-right: 1px solid var(--line);
+}
+
+/* Strict prefers-reduced-motion reset */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
