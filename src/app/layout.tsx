@@ -11,6 +11,7 @@ import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { TopNav } from "@/components/layout/top-nav";
 import { BottomHud } from "@/components/layout/bottom-hud";
 import { AudioToggle } from "@/components/layout/audio-toggle";
+import { Mascot } from "@/components/mascot/Mascot";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({
         <TopNav />
         <BottomHud />
         <AudioToggle />
+        <Mascot />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
