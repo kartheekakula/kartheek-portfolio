@@ -7,6 +7,10 @@ import {
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { FilmGrain } from "@/components/film-grain";
+import { ScrollProgress } from "@/components/layout/scroll-progress";
+import { TopNav } from "@/components/layout/top-nav";
+import { BottomHud } from "@/components/layout/bottom-hud";
+import { AudioToggle } from "@/components/layout/audio-toggle";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -44,7 +48,11 @@ export default function RootLayout({
       className={`dark ${bricolage.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-bg text-text font-display min-h-screen relative antialiased">
+        <ScrollProgress />
         <FilmGrain />
+        <TopNav />
+        <BottomHud />
+        <AudioToggle />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>

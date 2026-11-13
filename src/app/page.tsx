@@ -2,7 +2,7 @@ import { content } from "@/data/content";
 
 export default function Home() {
   return (
-    <main className="min-h-screen px-6 py-16 sm:px-12 md:px-20 lg:px-32 max-w-6xl mx-auto flex flex-col gap-28 md:gap-36">
+    <main className="min-h-screen px-6 pt-24 pb-28 sm:px-12 md:px-20 lg:px-32 max-w-6xl mx-auto flex flex-col gap-28 md:gap-36">
       {/* Hero / Identity */}
       <header className="flex flex-col gap-8 pt-8 md:pt-16 border-b border-line pb-16 md:pb-24">
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4">
@@ -24,7 +24,7 @@ export default function Home() {
         </div>
 
         {/* Bio Narrative */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-6 border-t border-line">
+        <div id="story" className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-6 border-t border-line scroll-mt-28">
           <div className="md:col-span-4">
             <span className="font-mono text-xs uppercase tracking-wider text-muted">
               Statement
@@ -42,7 +42,7 @@ export default function Home() {
       </header>
 
       {/* Selected Projects */}
-      <section className="flex flex-col gap-10">
+      <section id="work" className="flex flex-col gap-10 scroll-mt-28">
         <div className="flex items-baseline justify-between border-b border-line pb-4">
           <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
             Selected Works [ {content.projects.length.toString().padStart(2, "0")} ]
@@ -190,7 +190,7 @@ export default function Home() {
       </section>
 
       {/* Photography & Film Observations */}
-      <section className="flex flex-col gap-10">
+      <section id="lens" className="flex flex-col gap-10 scroll-mt-28">
         <div className="flex items-baseline justify-between border-b border-line pb-4">
           <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
             Visual Studies [ Photography & Film ]
@@ -274,7 +274,7 @@ export default function Home() {
       </section>
 
       {/* Network / Socials / Colophon */}
-      <footer className="border-t border-line pt-12 pb-20 flex flex-col gap-12">
+      <footer id="contact" className="border-t border-line pt-12 pb-24 flex flex-col gap-12 scroll-mt-28">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-4 flex flex-col gap-3">
             <span className="font-mono text-xs uppercase tracking-widest text-muted">
