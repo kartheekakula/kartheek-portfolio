@@ -12,6 +12,7 @@ import { TopNav } from "@/components/layout/top-nav";
 import { BottomHud } from "@/components/layout/bottom-hud";
 import { AudioToggle } from "@/components/layout/audio-toggle";
 import { Mascot } from "@/components/mascot/Mascot";
+import { TerminalOverlay } from "@/components/easter-eggs/terminal-overlay";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -55,6 +56,7 @@ export default function RootLayout({
         <BottomHud />
         <AudioToggle />
         <Mascot />
+        <TerminalOverlay />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>

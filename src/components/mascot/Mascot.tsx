@@ -119,6 +119,38 @@ export function Mascot() {
     };
   }, [isDragging, saveX, triggerClap, setMode, setPos, posRef, setIsDragging, setIsFalling]);
 
+  // Listen for global easter egg events (typing "action" and Konami flip)
+  useEffect(() => {
+    const handleMascotClap = () => {
+      triggerClap();
+    };
+
+    const handleMascotFlip = () => {
+      if (!squashRef.current) return;
+      gsap.to(squashRef.current, {
+        rotation: "+=360",
+        y: -35,
+        duration: 0.75,
+        ease: "power2.inOut",
+        onComplete: () => {
+          gsap.to(squashRef.current, {
+            y: 0,
+            duration: 0.25,
+            ease: "bounce.out",
+          });
+        },
+      });
+    };
+
+    window.addEventListener("mascot-clap", handleMascotClap);
+    window.addEventListener("mascot-flip", handleMascotFlip);
+
+    return () => {
+      window.removeEventListener("mascot-clap", handleMascotClap);
+      window.removeEventListener("mascot-flip", handleMascotFlip);
+    };
+  }, [triggerClap]);
+
   const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
     e.preventDefault();
     markActive();

@@ -4,6 +4,7 @@ import { ProjectsSection } from "@/components/sections/projects-section";
 import { SkillsSection } from "@/components/sections/skills-section";
 import { ExperienceSection } from "@/components/sections/experience-section";
 import { LensSection } from "@/components/sections/lens-section";
+import { ContactSection } from "@/components/sections/contact-section";
 
 export default function Home() {
   return (
@@ -44,46 +45,8 @@ export default function Home() {
       {/* Chapter 04: The Lens */}
       <LensSection />
 
-      {/* Network / Socials / Colophon */}
-      <footer id="contact" className="border-t border-line pt-12 pb-24 flex flex-col gap-12 scroll-mt-28">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-4 flex flex-col gap-3">
-            <span className="font-mono text-xs uppercase tracking-widest text-muted">
-              Colophon
-            </span>
-            <p className="text-xs text-muted leading-relaxed font-light">
-              Typeset in Bricolage Grotesque, Instrument Serif, and JetBrains Mono.
-              Engineered with Next.js, Lenis, GSAP, and Tailwind CSS.
-              No gradients. No glow.
-            </p>
-          </div>
-
-          <div className="md:col-span-8 flex flex-col gap-3">
-            <span className="font-mono text-xs uppercase tracking-widest text-muted">
-              Connect
-            </span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {content.socials.map((social, idx) => (
-                <a
-                  key={idx}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border border-line p-3 flex items-center justify-between font-mono text-xs text-muted hover:text-text hover:border-accent transition-colors"
-                >
-                  <span>{social.platform}</span>
-                  <span className="text-muted/60">{social.label} ↗</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-line pt-6 text-muted font-mono text-[11px]">
-          <span>© 2026 {content.name}. All rights reserved.</span>
-          <span>Index 01 // Dark Theme // Strict Contrast</span>
-        </div>
-      </footer>
+      {/* Chapter 05: Next / Contact & Colophon */}
+      <ContactSection />
     </main>
   );
 }
