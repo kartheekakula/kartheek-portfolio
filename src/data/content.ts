@@ -261,33 +261,24 @@ export const content: PortfolioContent = {
   ],
   skills: [
     {
-      category: "Engineering",
-      items: [
-        "TypeScript",
-        "Next.js",
-        "React",
-        "Node.js",
-        "Rust",
-        "Web Standards",
-      ],
+      category: "Languages",
+      items: ["Java", "Python", "JavaScript", "TypeScript", "SQL"],
     },
     {
-      category: "Design & Interaction",
-      items: [
-        "Design Systems",
-        "Typography",
-        "Information Architecture",
-        "Motion & Kinetics",
-      ],
+      category: "Frontend",
+      items: ["React", "Next.js", "Tailwind CSS", "GSAP"],
     },
     {
-      category: "Foundations",
-      items: [
-        "Performance Auditing",
-        "Distributed Systems",
-        "Accessibility",
-        "Developer Tooling",
-      ],
+      category: "Backend & Data",
+      items: ["Node.js", "REST APIs", "PostgreSQL", "MongoDB"],
+    },
+    {
+      category: "AI & Embedded",
+      items: ["OCR", "Computer Vision", "Raspberry Pi", "RAG"],
+    },
+    {
+      category: "Tools",
+      items: ["Git", "Vercel", "Figma", "Premiere Pro", "DaVinci Resolve"],
     },
   ],
   experience: [

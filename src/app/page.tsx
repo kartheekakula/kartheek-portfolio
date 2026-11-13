@@ -1,6 +1,7 @@
 import { content } from "@/data/content";
 import { AboutSection } from "@/components/sections/about-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
+import { SkillsSection } from "@/components/sections/skills-section";
 
 export default function Home() {
   return (
@@ -32,8 +33,11 @@ export default function Home() {
       {/* Chapter 02: Projects / The Build */}
       <ProjectsSection />
 
+      {/* Chapter 03: Skills / The Craft */}
+      <SkillsSection />
+
       {/* Experience & History */}
-      <section className="flex flex-col gap-10">
+      <section id="experience" className="flex flex-col gap-10 scroll-mt-28 border-t border-line pt-16 md:pt-24">
         <div className="flex items-baseline justify-between border-b border-line pb-4">
           <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
             Chronology [ Experience ]
@@ -82,34 +86,6 @@ export default function Home() {
                   </ul>
                 )}
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Capabilities & Skills */}
-      <section className="flex flex-col gap-10">
-        <div className="flex items-baseline justify-between border-b border-line pb-4">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
-            Disciplines & Tooling
-          </h2>
-          <span className="font-mono text-xs text-muted">Stack</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {content.skills.map((group, idx) => (
-            <div key={idx} className="border border-line p-6 flex flex-col gap-4">
-              <span className="font-mono text-xs uppercase tracking-widest text-muted border-b border-line pb-2">
-                // {group.category}
-              </span>
-              <ul className="flex flex-col gap-2 font-mono text-xs text-text/80">
-                {group.items.map((skill, sIdx) => (
-                  <li key={sIdx} className="flex items-center gap-2">
-                    <span className="text-muted/60 text-[10px]">+</span>
-                    <span>{skill}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>

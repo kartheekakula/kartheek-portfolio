@@ -293,3 +293,4 @@ export function ProjectsSection() {
     </section>
   );
 }
+
