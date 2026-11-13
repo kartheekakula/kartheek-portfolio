@@ -5,9 +5,6 @@ import { useState } from "react";
 const NAV_ITEMS = [
   { label: "Work", href: "#work" },
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Lens", href: "#lens" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -32,20 +29,20 @@ export function TopNav() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-6 py-5 sm:px-12 md:px-20 lg:px-32 mix-blend-difference pointer-events-none">
+    <header className="fixed top-0 left-0 right-0 z-40 px-6 py-6 sm:px-12 md:px-20 lg:px-32 mix-blend-difference pointer-events-none">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <a
           href="#"
           onClick={(e) => handleScroll(e, "#")}
-          className="font-sans text-xs uppercase tracking-widest text-white hover:text-tangerine transition-colors pointer-events-auto font-medium"
+          className="font-sans text-sm tracking-wide text-white hover:text-tangerine transition-colors pointer-events-auto font-medium"
           aria-label="Kartheek - Back to Top"
         >
-          KARTHEEK
+          Kartheek
         </a>
 
-        {/* Desktop Nav */}
+        {/* Desktop Nav: Exactly three links */}
         <nav aria-label="Main Navigation" className="hidden sm:block">
-          <ul className="flex items-center gap-6 md:gap-8 font-sans text-xs uppercase tracking-wider text-white/80">
+          <ul className="flex items-center gap-8 md:gap-10 font-sans text-sm tracking-wide text-white/80">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
                 <a
@@ -81,7 +78,7 @@ export function TopNav() {
           className="sm:hidden pointer-events-auto mt-4 border border-line bg-cream p-6 animate-fadeIn shadow-2xl"
           style={{ mixBlendMode: "normal" }}
         >
-          <ul className="flex flex-col gap-4 font-sans text-xs uppercase tracking-widest text-muted">
+          <ul className="flex flex-col gap-4 font-sans text-sm tracking-wide text-muted">
             {NAV_ITEMS.map((item) => (
               <li key={item.label} className="border-b border-line/40 pb-2">
                 <a

@@ -64,7 +64,7 @@ export function BottomHud() {
   return (
     <aside
       aria-label="Viewport status HUD"
-      className="fixed bottom-5 left-6 sm:left-12 md:px-0 lg:left-32 z-40 pointer-events-none flex items-center gap-4 font-sans text-xs tracking-wider uppercase text-white mix-blend-difference select-none"
+      className="fixed bottom-5 left-6 sm:left-12 md:left-20 lg:left-32 z-40 pointer-events-none flex items-center gap-3 font-sans text-[11px] tracking-wider uppercase text-white mix-blend-difference select-none"
     >
       {/* Blinking REC dot */}
       <div className="flex items-center gap-1.5">
@@ -75,14 +75,14 @@ export function BottomHud() {
         <span className="text-white font-medium">REC</span>
       </div>
 
-      {/* Timecode (hidden on mobile) without slashes */}
-      <span className="tabular-nums text-white hidden sm:inline">
+      {/* Timecode */}
+      <span className="tabular-nums text-white hidden xs:inline">
         {timecode}
       </span>
 
-      {/* Live IST clock (hidden on mobile) */}
+      {/* Live IST clock */}
       {istTime && (
-        <span className="tabular-nums text-white/80 hidden sm:inline">
+        <span className="tabular-nums text-white/80">
           {istTime} IST
         </span>
       )}
