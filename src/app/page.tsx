@@ -35,10 +35,8 @@ export default function Home() {
       {/* Lens: Films (Ink, Pinned Horizontal Strip) & Photography (Cream, Grid) */}
       <LensSection />
 
-      {/* Light Cream: Contact */}
-      <div className="w-full max-w-6xl mx-auto px-6 pt-16 pb-28 sm:px-12 md:px-20 lg:px-32">
-        <ContactSection />
-      </div>
+      {/* Contact & Footer with Diagonal Cut Transition */}
+      <ContactSection />
     </main>
   );
 }
