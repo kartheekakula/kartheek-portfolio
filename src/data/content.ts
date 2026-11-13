@@ -31,7 +31,7 @@ export interface SkillCategory {
 
 export interface Experience {
   role: string;
-  org: string;
+  org?: string;
   place?: string;
   period: string;
   tags?: string[];
@@ -83,6 +83,7 @@ export interface PortfolioContent {
     line2: string;
   };
   experienceClosingNote?: string;
+  educationNote?: string;
   projects: Project[];
   skills: SkillCategory[];
   experience: Experience[];
@@ -186,66 +187,60 @@ export const content: PortfolioContent = {
       role: "Founder",
       org: "Arkee",
       period: "2026",
-      tags: ["Startup", "Product", "Filmmaking"],
-      bullets: [
-        "Built a platform where filmmakers share short films, get discovered through a portfolio profile, and collaborate by craft.",
-      ],
+      tags: ["Startup", "Product"],
+      bullets: ["[placeholder]"],
     },
     {
       role: "Product Analyst",
-      org: "Alfaleus Technology Private Limited",
-      place: "Hyderabad",
-      period: "June 2026 (1 month)",
+      org: "Alfaleus Technology, Hyderabad",
+      period: "June 2026",
+      tags: ["Product", "Sales", "Design"],
       bullets: [
-        "Brought in 5-6 clients during a 1-month internship, contributing directly to the product's client pipeline.",
-        "Gave design input on a separate unreleased hardware product still in development.",
-        "Edited product demo videos to market the company's existing products.",
+        "Brought in 5-6 clients in one month.",
+        "Gave design input on an unreleased hardware product.",
+        "Edited product demo videos.",
       ],
     },
     {
       role: "Community Manager",
       org: "Entrepreneurship Club, VIT-AP",
-      place: "Amaravati",
-      period: "June 2025 – August 2026 (1 yr 3 mo)",
+      period: "2025 to 2026",
+      tags: ["Community", "Events"],
       bullets: [
-        "Co-organized Eureka, a college businessathon, as part of the core organizing team.",
-        "Built and ran a game night event for the college's Discord community.",
-        "Reached the finals of the National Entrepreneurship Challenge (IIT Bombay) through club involvement.",
+        "Co-organized Eureka, a college businessathon.",
+        "Ran a game night for the Discord community.",
+        "Reached the National Entrepreneurship Challenge finals at IIT Bombay.",
       ],
     },
     {
       role: "Freelance Video Editor",
-      org: "Freelance",
-      period: "August 2025 – July 2026 (1 yr)",
+      period: "2025 to 2026",
+      tags: ["Editing", "Storytelling"],
       bullets: [
-        "Edited a short film sequence that became part of a demo film now used to fundraise for a feature-length production.",
-        "Edited YouTube content for a client that reached 5,000 views per video.",
-        "Delivered ongoing edited content for 3-4 creators over the year.",
+        "Edited a short film sequence used in a demo film to fundraise for a feature.",
+        "Edited YouTube content that reached 5,000 views per video.",
+        "Delivered content for 3-4 creators.",
       ],
     },
     {
       role: "Content Creator",
-      org: "Self",
-      place: "India",
-      period: "December 2024 – July 2026 (1 yr 8 mo)",
+      period: "2024 to 2026",
+      tags: ["Short-form", "Micro-films"],
       bullets: [
-        "Produced short-form content reaching 10K-25K views per video by studying what drives engagement.",
-        "Made micro-films, self-directed 1-minute shorts, alongside audience-facing content.",
-        "Prioritized viewership patterns and storytelling over follower count alone.",
+        "Short-form videos reaching 10K to 25K views.",
+        "Made one-minute micro-films.",
+        "Focused on storytelling over follower count.",
       ],
     },
   ],
 
+  educationNote: "VIT-AP University, B.Tech Computer Science, 2024 to 2028",
+
   education: [
     {
       institution: "VIT-AP University",
-      program: "B.Tech CSE",
-      period: "2024–2028",
-    },
-    {
-      institution: "FIITJEE",
-      program: "MPC",
-      period: "2022–2024",
+      program: "B.Tech Computer Science",
+      period: "2024 to 2028",
     },
   ],
 
