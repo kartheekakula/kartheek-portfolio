@@ -45,12 +45,17 @@ export interface SkillCategory {
 }
 
 export interface Experience {
-  period: string;
   role: string;
-  company: string;
-  location?: string;
-  summary: string;
-  highlights?: string[];
+  org: string;
+  place?: string;
+  period: string;
+  bullets: string[];
+}
+
+export interface Education {
+  institution: string;
+  program: string;
+  period: string;
 }
 
 export interface SocialLink {
@@ -113,6 +118,8 @@ export interface PortfolioContent {
   projects: Project[];
   skills: SkillCategory[];
   experience: Experience[];
+  education: Education[];
+  experienceClosingNote: string;
   socials: SocialLink[];
   photos: Photo[];
   films: Film[];
@@ -283,30 +290,72 @@ export const content: PortfolioContent = {
   ],
   experience: [
     {
-      period: "2024 — Present",
-      role: "Staff Engineer / Designer",
-      company: "Independent Practice",
-      location: "Remote",
-      summary:
-        "Directing product architecture, design systems, and bespoke tooling for engineering-focused teams.",
-      highlights: [
-        "Architected core platforms used by high-throughput workflows.",
-        "Refined design systems emphasizing strict accessibility and typographic harmony.",
+      role: "Founder",
+      org: "Arkee",
+      place: "Self-started",
+      period: "2026 – Present",
+      bullets: [
+        "A startup I am building and testing. I do not know yet if it will work, but I built it.",
       ],
     },
     {
-      period: "2022 — 2024",
-      role: "Senior Software Engineer",
-      company: "Studio Vanguard",
-      location: "San Francisco / Remote",
-      summary:
-        "Spearheaded front-end infrastructure, build performance, and interactive client applications.",
-      highlights: [
-        "Reduced bundle footprint and layout shifts across client surfaces.",
-        "Authored internal guidelines on motion accessibility and kinetic restraint.",
+      role: "Product Analyst",
+      org: "Alfaleus Technology Private Limited",
+      place: "Hyderabad",
+      period: "June 2026 (1 month)",
+      bullets: [
+        "Brought in 5-6 clients during a 1-month internship, contributing directly to the product's client pipeline.",
+        "Gave design input on a separate unreleased hardware product still in development.",
+        "Edited product demo videos to market the company's existing products.",
+      ],
+    },
+    {
+      role: "Community Manager",
+      org: "Entrepreneurship Club, VIT-AP",
+      place: "Amaravati",
+      period: "June 2025 – August 2026 (1 yr 3 mo)",
+      bullets: [
+        "Co-organized Eureka, a college businessathon, as part of the core organizing team.",
+        "Built and ran a game night event for the college's Discord community.",
+        "Reached the finals of the National Entrepreneurship Challenge (IIT Bombay) through club involvement.",
+      ],
+    },
+    {
+      role: "Freelance Video Editor",
+      org: "Freelance",
+      period: "August 2025 – July 2026 (1 yr)",
+      bullets: [
+        "Edited a short film sequence that became part of a demo film now used to fundraise for a feature-length production.",
+        "Edited YouTube content for a client that reached 5,000 views per video.",
+        "Delivered ongoing edited content for 3-4 creators over the year.",
+      ],
+    },
+    {
+      role: "Content Creator",
+      org: "Self",
+      place: "India",
+      period: "December 2024 – July 2026 (1 yr 8 mo)",
+      bullets: [
+        "Produced short-form content reaching 10K-25K views per video by studying what drives engagement.",
+        "Made micro-films, self-directed 1-minute shorts, alongside audience-facing content.",
+        "Prioritized viewership patterns and storytelling over follower count alone.",
       ],
     },
   ],
+  education: [
+    {
+      institution: "VIT-AP University",
+      program: "B.Tech CSE",
+      period: "2024–2028",
+    },
+    {
+      institution: "FIITJEE",
+      program: "MPC",
+      period: "2022–2024",
+    },
+  ],
+  experienceClosingNote:
+    "I'm early on the coding side. I'd rather say that plainly than oversell it.",
   socials: [
     {
       platform: "GitHub",

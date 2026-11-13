@@ -2,6 +2,7 @@ import { content } from "@/data/content";
 import { AboutSection } from "@/components/sections/about-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { SkillsSection } from "@/components/sections/skills-section";
+import { ExperienceSection } from "@/components/sections/experience-section";
 
 export default function Home() {
   return (
@@ -36,60 +37,8 @@ export default function Home() {
       {/* Chapter 03: Skills / The Craft */}
       <SkillsSection />
 
-      {/* Experience & History */}
-      <section id="experience" className="flex flex-col gap-10 scroll-mt-28 border-t border-line pt-16 md:pt-24">
-        <div className="flex items-baseline justify-between border-b border-line pb-4">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-muted">
-            Chronology [ Experience ]
-          </h2>
-          <span className="font-mono text-xs text-muted">Career Trajectory</span>
-        </div>
-
-        <div className="divide-y divide-line border-y border-line">
-          {content.experience.map((item, idx) => (
-            <div
-              key={idx}
-              className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 px-2"
-            >
-              <div className="md:col-span-4 flex flex-col gap-1">
-                <span className="font-mono text-xs text-muted">
-                  {item.period}
-                </span>
-                <span className="text-lg text-text font-normal">
-                  {item.company}
-                </span>
-                {item.location && (
-                  <span className="font-mono text-xs text-muted">
-                    {item.location}
-                  </span>
-                )}
-              </div>
-
-              <div className="md:col-span-8 flex flex-col gap-3">
-                <span className="text-base font-normal text-text">
-                  {item.role}
-                </span>
-                <p className="text-sm sm:text-base text-muted font-light leading-relaxed">
-                  {item.summary}
-                </p>
-                {item.highlights && item.highlights.length > 0 && (
-                  <ul className="flex flex-col gap-1.5 pt-2">
-                    {item.highlights.map((highlight, hIdx) => (
-                      <li
-                        key={hIdx}
-                        className="font-mono text-xs text-muted flex items-start gap-2"
-                      >
-                        <span className="text-accent">—</span>
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Chapter 03b: Experience / The Road So Far */}
+      <ExperienceSection />
 
       {/* Photography & Film Observations */}
       <section id="lens" className="flex flex-col gap-10 scroll-mt-28">
