@@ -48,6 +48,30 @@ export interface Film {
   link?: string;
 }
 
+export interface Fact {
+  label: string;
+  value: string;
+}
+
+export interface AboutLink {
+  label: string;
+  href: string;
+  download?: boolean;
+}
+
+export interface AboutChapter {
+  chapter: string;
+  title: string;
+  lines: string[];
+  photo: {
+    src: string;
+    caption: string;
+    alt: string;
+  };
+  facts: Fact[];
+  links: AboutLink[];
+}
+
 export interface PortfolioContent {
   name: string;
   tagline: string;
@@ -55,6 +79,7 @@ export interface PortfolioContent {
     intro: string;
     narrative: string[];
   };
+  about: AboutChapter;
   projects: Project[];
   skills: SkillCategory[];
   experience: Experience[];
@@ -71,6 +96,32 @@ export const content: PortfolioContent = {
     narrative: [
       "I believe software should feel tactile, intentional, and stripped of unnecessary noise. Every detail is balanced between technical rigour and editorial clarity.",
       "Rooted in minimalism, high performance, and enduring typography. Exploring interfaces that feel deliberate rather than generative.",
+    ],
+  },
+  about: {
+    chapter: "01",
+    title: "THE EYE",
+    lines: [
+      "I started with a camera and an editing timeline.",
+      "That taught me how to notice.",
+      "Then I learned code, and found out you can build the thing, not just film it.",
+    ],
+    photo: {
+      src: "/images/portrait.jpg",
+      caption: "FIG. 01 — ME, MOSTLY",
+      alt: "Portrait of Kartheek",
+    },
+    facts: [
+      { label: "Based in", value: "Hyderabad, India" },
+      { label: "Studying", value: "Computer Science & Engineering" },
+      { label: "Interested in", value: "Quiet Systems, Compilers & Analog Motion" },
+    ],
+    links: [
+      { label: "GitHub", href: "https://github.com/kartheekakula" },
+      { label: "LinkedIn", href: "https://linkedin.com" },
+      { label: "Instagram", href: "https://instagram.com" },
+      { label: "YouTube", href: "https://youtube.com" },
+      { label: "Resume", href: "/resume.pdf", download: true },
     ],
   },
   projects: [
@@ -204,4 +255,3 @@ export const content: PortfolioContent = {
     },
   ],
 };
-

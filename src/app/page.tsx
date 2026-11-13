@@ -1,4 +1,5 @@
 import { content } from "@/data/content";
+import { AboutSection } from "@/components/sections/about-section";
 
 export default function Home() {
   return (
@@ -22,24 +23,10 @@ export default function Home() {
             {content.tagline}
           </p>
         </div>
-
-        {/* Bio Narrative */}
-        <div id="story" className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-6 border-t border-line scroll-mt-28">
-          <div className="md:col-span-4">
-            <span className="font-mono text-xs uppercase tracking-wider text-muted">
-              Statement
-            </span>
-          </div>
-          <div className="md:col-span-8 flex flex-col gap-4 text-base sm:text-lg text-text/90 leading-relaxed font-light">
-            <p className="text-text font-normal">{content.bio.intro}</p>
-            {content.bio.narrative.map((paragraph, index) => (
-              <p key={index} className="text-muted leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </div>
       </header>
+
+      {/* Chapter 01: About / The Eye */}
+      <AboutSection />
 
       {/* Selected Projects */}
       <section id="work" className="flex flex-col gap-10 scroll-mt-28">
